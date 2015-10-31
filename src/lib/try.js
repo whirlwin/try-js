@@ -5,7 +5,7 @@ class Try {
         this.err = err;
     }
 
-    exec(fn) {
+    static exec(fn) {
         try {
             return new Try(fn(), null);
         } catch (err) {
@@ -14,14 +14,17 @@ class Try {
     }
 
     map(fn) {
+        let result;
         if (!this.err) {
-            return new Try(fn(this.result), null);
+            result = new Try(fn(this.result), null);
         } else {
-            return new Try(null, this.err);
+            result = new Try(null, this.err);
         }
+        return result;
     }
 
     resolve(successFn, failureFn) {
+        let terminalResult;
         if (!successFn) {
             throw new Error("Success function (arg 1) not provided for Try.resolve");
         } else if (!failureFn) {
@@ -29,10 +32,11 @@ class Try {
         }
 
         if (this.err) {
-            return failureFn(this.err);
+            terminalResult = failureFn(this.err);
         } else {
-            return successFn(this.result);
+            terminalResult = successFn(this.result);
         }
+        return terminalResult;
     }
 }
 

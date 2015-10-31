@@ -4,7 +4,7 @@ const of = (fn) => {
     if (!fn) {
         throw new Error("Function not provided for Try.of");
     }
-    return new Try().exec(fn);
+    return Try.exec(fn);
 };
 
 module.exports = {

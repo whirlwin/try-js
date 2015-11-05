@@ -10,7 +10,7 @@ var result = Try.of(function() { return 10 })
     .resolve(function(res) { return res; },
              function(err) { return -1 });
 
-console.log(res); // Prints 20
+console.log(result); // Prints 20
 ```
 
 Example usage #2, failure case:
@@ -22,5 +22,5 @@ var result = Try.of(function() { throw new Error("Internal failure") })
     .resolve(function(res) { return res; },
              function(err) { return -1 });
 
-console.log(res); // Prints -1
+console.log(result); // Prints -1
 ```

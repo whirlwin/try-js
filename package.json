@@ -9,6 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 2",
     "transpile": "gulp"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whirlwin/try-js"
+  },
   "author": "whirlwin",
   "license": "MIT",
   "devDependencies": {

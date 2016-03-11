@@ -1,6 +1,8 @@
 # try-js
 Type/construct for handling errors in Node.js, inspired by Scala's Try type.
 
+[![Build Status](https://travis-ci.org/whirlwin/try-js.svg?branch=master)](https://travis-ci.org/whirlwin/try-js)
+
 Example usage #1, happy case:
 ```javascript
 var Try = require("try-js");

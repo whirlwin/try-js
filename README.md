@@ -24,3 +24,4 @@ var result = Try.of(function() { throw new Error("Internal failure") })
 
 console.log(result); // Prints -1
 ```
+

@@ -23,6 +23,20 @@ class Try {
         return result;
     }
 
+    peek(fn) {
+        if (!this.err) {
+            fn(this.result);
+        }
+        return new Try(this.result, this.err);
+    }
+
+    peekFailure(fn) {
+        if (this.err) {
+            fn(this.err);
+        }
+        return new Try(this.result, this.err);
+    }
+
     resolve(successFn, failureFn) {
         let terminalResult;
         if (!successFn) {

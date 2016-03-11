@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "gulp dev",
     "lint": "eslint src/**/*.js *.js",
-    "test": "echo \"Error: no test specified\" && exit 2",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "transpile": "gulp"
   },
   "repository": {

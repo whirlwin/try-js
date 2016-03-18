@@ -1,4 +1,5 @@
-const Try = require("./lib/try");
+//const Try = require("./lib/try");
+import Try from "./lib/try";
 
 const of = (fn) => {
     if (!fn) {

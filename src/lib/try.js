@@ -7,51 +7,85 @@ class Try {
 
     static exec(fn) {
         try {
-            return new Try(fn(), null);
+            return new Success(fn());
         } catch (err) {
-            return new Try(null, err);
+            return new Failure(err);
         }
     }
 
-    map(fn) {
-        let result;
-        if (!this.err) {
-            result = new Try(fn(this.result), null);
-        } else {
-            result = new Try(null, this.err);
-        }
-        return result;
-    }
+    map(fn) {}
 
-    peek(fn) {
-        if (!this.err) {
-            fn(this.result);
-        }
-        return new Try(this.result, this.err);
-    }
+    peek(fn) {}
 
-    peekFailure(fn) {
-        if (this.err) {
-            fn(this.err);
-        }
-        return new Try(this.result, this.err);
-    }
+    peekFailure(fn) {}
 
     resolve(successFn, failureFn) {
-        let terminalResult;
         if (!successFn) {
-            throw new Error("Success function (arg 1) not provided for Try.resolve");
+            throw new Error("(arg 1 - function) not provided for function resolve");
         } else if (!failureFn) {
-            throw new Error("Failure function (arg 2) not provided for Try.resolve");
+            throw new Error("(arg 2 - function) not provided for function resolve");
         }
-
-        if (this.err) {
-            terminalResult = failureFn(this.err);
-        } else {
-            terminalResult = successFn(this.result);
-        }
-        return terminalResult;
     }
 }
 
-module.exports = Try;
+class Success extends Try {
+
+    constructor(result) {
+        super(result, null);
+    }
+
+    map(fn) {
+        if (!fn) {
+            throw new Error("(arg1 - function) not provided for function map")
+        }
+        return new Success(fn(this.result));
+    }
+
+    peek(fn) {
+        if (!fn) {
+            throw new Error("(arg1 - function) not provided for function peek")
+        }
+        fn(this.result);
+        return new Success(this.result);
+    }
+
+    peekFailure(fn) {
+        return new Success(this.result);
+    }
+
+    resolve(successFn, failureFn) {
+        super.resolve(successFn, failureFn);
+        return successFn(this.result);
+    }
+}
+
+class Failure extends Try {
+
+    constructor(err) {
+        super(null, err);
+        this.err = err;
+    }
+
+    map() {
+        return new Failure(this.err);
+    }
+
+    peek() {
+        return new Failure(this.err);
+    }
+
+    peekFailure(fn) {
+        if (!fn) {
+            throw new Error("(arg1 - function) not provided for peekFailure function");
+        }
+        fn(this.err);
+        return new Failure(this.err);
+    }
+
+    resolve(successFn, failureFn) {
+        super.resolve(successFn, failureFn);
+        return failureFn(this.err);
+    }
+}
+
+export default Try;

@@ -1,2 +1,6 @@
+.idea
+.eslintignore
+.eslintrc
+.travis.yml
 gulpfile.babel.js
 src

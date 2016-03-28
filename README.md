@@ -27,3 +27,7 @@ var result = Try.of(function() { throw new Error("Internal failure") })
 console.log(result); // Prints -1
 ```
 
+## Functions
+
+### Try.of(computeFn)
+Accepts a function resulting in an Error or value

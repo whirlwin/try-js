@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "gulp dev",
     "lint": "eslint src/**/*.js *.js",
+    "prepublish": "npm run transpile",
     "test": "echo \"Error: no test specified\" && exit 0",
     "transpile": "gulp"
   },

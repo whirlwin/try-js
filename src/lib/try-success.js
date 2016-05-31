@@ -1,4 +1,5 @@
 import Try from './try';
+import ValidationUtil from './validation-util';
 
 class Success extends Try {
 
@@ -7,16 +8,16 @@ class Success extends Try {
     }
 
     map(fn) {
-        if (!fn) {
-            throw new Error("(arg1 - function) not provided for function map")
-        }
+        ValidationUtil.validatePresenceOfFunction(fn).orThrow("(arg1 - function) not provided for function map");
         return new Success(fn(this.result));
     }
 
+    flatMap(fn) {
+        ValidationUtil.validatePresenceOfFunction(fn).orThrow('(arg1 - function) not provided for function flatMap');
+    }
+
     peek(fn) {
-        if (!fn) {
-            throw new Error("(arg1 - function) not provided for function peek")
-        }
+        ValidationUtil.validatePresenceOfFunction(fn).orThrow("(arg1 - function) not provided for function peek");
         fn(this.result);
         return new Success(this.result);
     }

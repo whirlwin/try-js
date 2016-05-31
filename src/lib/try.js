@@ -7,6 +7,8 @@ class Try {
 
     map(fn) {}
 
+    flatMap(fn) {}
+
     peek(fn) {}
 
     peekFailure(fn) {}

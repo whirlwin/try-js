@@ -1,4 +1,5 @@
 import Try from './try';
+import ValidationUtil from './validation-util';
 
 class Failure extends Try {
 
@@ -16,9 +17,8 @@ class Failure extends Try {
     }
 
     peekFailure(fn) {
-        if (!fn) {
-            throw new Error("(arg1 - function) not provided for peekFailure function");
-        }
+        ValidationUtil.validatePresenceOfFunction(fn)
+            .orThrow("(arg1 - function) not provided for peekFailure function");
         fn(this.err);
         return new Failure(this.err);
     }

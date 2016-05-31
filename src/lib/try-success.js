@@ -7,6 +7,10 @@ class Success extends Try {
         super(null, result);
     }
 
+    getOrElse() {
+        return this.result;
+    }
+
     flatMap(fn) {
         ValidationUtil.validatePresenceOfFunction(fn)
             .orThrow('(arg1 - function) not provided for function flatMap');

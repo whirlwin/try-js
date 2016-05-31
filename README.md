@@ -35,6 +35,9 @@ Accepts a function resulting in failure or success
 ### .flatMap(flatMapFn) - Returns a flat mapped value
 Accepts a function that transforms a nested Try
 
+### .getOrElse(defaultValue) - Returns the value or default value
+Accepts a default value which is returned in case of failure, otherwise the value is returned
+
 ### .isFailure() - Returns a boolean
 
 ### .isSuccess() - Returns a boolean

@@ -12,6 +12,10 @@ class Failure extends Try {
         return new Failure(this.err);
     }
 
+    getOrElse(defaultValue) {
+        return defaultValue;
+    }
+
     isFailure() {
         return true;
     }

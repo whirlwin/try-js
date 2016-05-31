@@ -7,10 +7,10 @@ Example usage #1, happy case:
 ```javascript
 var Try = require("try-js");
 
-var result = Try.of(function() { return 10; })
-    .map(function(res) { return res + 10; })
-    .resolve(function(res) { return res; },
-             function(err) { return -1; });
+var result = Try.of(() => 10)
+    .map(res => res + 10)
+    .resolve(res => res,
+             err => -1);
 
 console.log(result); // Prints 20
 ```
@@ -19,10 +19,10 @@ Example usage #2, failure case:
 ```javascript
 var Try = require("try-js");
 
-var result = Try.of(function() { throw new Error("Internal failure") })
-    .map(function(res) { return res + 10; })
-    .resolve(function(res) { return res; },
-             function(err) { return -1; });
+var result = Try.of(() => { throw new Error("Internal failure") })
+    .map(res => res + 10 )
+    .resolve(res => res,
+             err => -1);
 
 console.log(result); // Prints -1
 ```

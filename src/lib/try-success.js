@@ -7,22 +7,26 @@ class Success extends Try {
         super(null, result);
     }
 
+    flatMap(fn) {
+        ValidationUtil.validatePresenceOfFunction(fn)
+            .orThrow('(arg1 - function) not provided for function flatMap');
+        return fn.call(this, this.result);
+    }
+
     map(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn).orThrow("(arg1 - function) not provided for function map");
+        ValidationUtil.validatePresenceOfFunction(fn)
+            .orThrow('(arg1 - function) not provided for function map');
         return new Success(fn(this.result));
     }
 
-    flatMap(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn).orThrow('(arg1 - function) not provided for function flatMap');
-    }
-
     peek(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn).orThrow("(arg1 - function) not provided for function peek");
+        ValidationUtil.validatePresenceOfFunction(fn)
+            .orThrow('(arg1 - function) not provided for function peek');
         fn(this.result);
         return new Success(this.result);
     }
 
-    peekFailure(fn) {
+    peekFailure() {
         return new Success(this.result);
     }
 

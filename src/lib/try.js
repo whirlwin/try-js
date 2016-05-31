@@ -1,3 +1,5 @@
+import ValidationUtil from './validation-util';
+
 class Try {
 
     constructor(err, result) {
@@ -5,20 +7,19 @@ class Try {
         this.result = result;
     }
 
-    map(fn) {}
+    flatMap() {}
 
-    flatMap(fn) {}
+    map() {}
 
-    peek(fn) {}
+    peek() {}
 
-    peekFailure(fn) {}
+    peekFailure() {}
 
     resolve(successFn, failureFn) {
-        if (!successFn) {
-            throw new Error("(arg 1 - function) not provided for function resolve");
-        } else if (!failureFn) {
-            throw new Error("(arg 2 - function) not provided for function resolve");
-        }
+        ValidationUtil.validatePresenceOfFunction(successFn)
+            .orThrow('(arg 1 - function) not provided for function resolve');
+        ValidationUtil.validatePresenceOfFunction(failureFn)
+            .orThrow('(arg 2 - function) not provided for function resolve');
     }
 }
 

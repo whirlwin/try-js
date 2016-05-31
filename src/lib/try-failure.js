@@ -8,6 +8,10 @@ class Failure extends Try {
         this.err = err;
     }
 
+    flatMap() {
+        return new Failure(this.err);
+    }
+
     map() {
         return new Failure(this.err);
     }
@@ -18,7 +22,7 @@ class Failure extends Try {
 
     peekFailure(fn) {
         ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow("(arg1 - function) not provided for peekFailure function");
+            .orThrow('(arg1 - function) not provided for peekFailure function');
         fn(this.err);
         return new Failure(this.err);
     }

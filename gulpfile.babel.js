@@ -1,12 +1,12 @@
-const gulp = require("gulp");
-const babel = require("gulp-babel");
+const gulp = require('gulp');
+const babel = require('gulp-babel');
 
-gulp.task("default", () => {
-    return gulp.src("./src/**/*.js")
-        .pipe(babel({ presets: ["es2015"] }))
-        .pipe(gulp.dest("./dist"));
-});
+gulp.task('default', () =>
+    gulp.src('./src/**/*.js')
+        .pipe(babel({ presets: ['es2015'] }))
+        .pipe(gulp.dest('./dist'))
+);
 
-gulp.task("dev", ["default"], () => {
-    gulp.watch("./src/**/*.js", ["default"]);
+gulp.task('dev', ['default'], () => {
+    gulp.watch('./src/**/*.js', ['default']);
 });

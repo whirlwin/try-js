@@ -3,7 +3,7 @@ import Failure from './lib/try-failure';
 
 const of = (fn) => {
     if (!fn) {
-        throw new Error("Function not provided for Try.of");
+        throw new Error('Function not provided for Try.of');
     } else {
         try {
             return new Success(fn());

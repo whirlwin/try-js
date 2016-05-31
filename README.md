@@ -30,10 +30,17 @@ console.log(result); // Prints -1
 ## Functions
 
 ### Try.of(computeFn) - Returns new Try instance
-Accepts a function resulting in an Error or value
+Accepts a function resulting in failure or success
+
+### .flatMap(flatMapFn) - Returns a flat mapped value
+Accepts a function that transforms a nested Try
+
+### .isFailure() - Returns a boolean
+
+### .isSuccess() - Returns a boolean
 
 ### .map(mapFn) - Returns mapped value
-Accepts function that transforms a successful Try value
+Accepts function that transforms a value
 
 ### .peek(peekFn) - Returns itself
 Accepts a function used to peek at a success value without modifying the value

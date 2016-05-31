@@ -9,6 +9,10 @@ class Try {
 
     flatMap() {}
 
+    isFailure() {}
+
+    isSuccess() {}
+
     map() {}
 
     peek() {}

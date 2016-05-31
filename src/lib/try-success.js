@@ -13,6 +13,14 @@ class Success extends Try {
         return fn.call(this, this.result);
     }
 
+    isFailure() {
+        return false;
+    }
+
+    isSuccess() {
+        return true;
+    }
+
     map(fn) {
         ValidationUtil.validatePresenceOfFunction(fn)
             .orThrow('(arg1 - function) not provided for function map');

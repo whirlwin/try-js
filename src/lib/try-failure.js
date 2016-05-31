@@ -12,6 +12,14 @@ class Failure extends Try {
         return new Failure(this.err);
     }
 
+    isFailure() {
+        return true;
+    }
+
+    isSuccess() {
+        return false;
+    }
+
     map() {
         return new Failure(this.err);
     }

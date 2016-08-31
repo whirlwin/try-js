@@ -32,6 +32,12 @@ console.log(result); // Prints -1
 ### Try.of(computeFn) - Returns new Try instance
 Accepts a function resulting in failure or success
 
+### Try.success(value) - Returns a new success based Try
+Accepts a value
+
+### Try.failure(err) - Returns a new failure based Try
+Accepts an error
+
 ### .flatMap(flatMapFn) - Returns a flat mapped value
 Accepts a function that transforms a nested Try
 

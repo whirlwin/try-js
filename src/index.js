@@ -1,7 +1,8 @@
 import Success from './lib/try-success';
 import Failure from './lib/try-failure';
+import TypeUtils from './lib/type-utils';
 
-const of = (fn) => {
+function of(fn) {
     if (!fn) {
         throw new Error('Function not provided for Try.of');
     } else {
@@ -11,7 +12,15 @@ const of = (fn) => {
             return new Failure(err);
         }
     }
-};
+}
 
-export { of };
+function success(result) {
+    return new Success(result);
+}
+
+function failure(err) {
+    return new Failure(err);
+}
+
+export { of, success, failure };
 

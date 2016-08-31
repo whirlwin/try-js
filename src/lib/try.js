@@ -7,9 +7,9 @@ class Try {
         this.result = result;
     }
 
-    getOrElse() {}
-
     flatMap() {}
+
+    getOrElse() {}
 
     isFailure() {}
 

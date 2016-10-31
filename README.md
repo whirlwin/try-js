@@ -38,6 +38,9 @@ Accepts a value
 ### Try.failure(err) - Returns a new failure based Try
 Accepts an error
 
+### Try.filter(filterFn) - Returns a success or failure based Try
+Accepts a predicate that leads to a failure or success
+
 ### .flatMap(flatMapFn) - Returns a flat mapped value
 Accepts a function that transforms a nested Try
 

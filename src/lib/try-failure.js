@@ -8,12 +8,16 @@ class Failure extends Try {
         this.err = err;
     }
 
+    filter() {
+        return new Failure(this.err);
+    }
+
     flatMap() {
         return new Failure(this.err);
     }
 
-    getOrElse(defaultValue) {
-        return defaultValue;
+    getOrElse(value) {
+        return value;
     }
 
     isFailure() {

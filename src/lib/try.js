@@ -7,6 +7,8 @@ class Try {
         this.result = result;
     }
 
+    filter() {}
+
     flatMap() {}
 
     getOrElse() {}

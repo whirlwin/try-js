@@ -1,6 +1,5 @@
 import Success from './lib/try-success';
 import Failure from './lib/try-failure';
-import TypeUtils from './lib/type-utils';
 
 function of(fn) {
     if (!fn) {

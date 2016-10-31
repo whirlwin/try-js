@@ -1,3 +1,4 @@
+import Failure from './try-failure';
 import Try from './try';
 import ValidationUtil from './validation-util';
 
@@ -7,14 +8,25 @@ class Success extends Try {
         super(null, result);
     }
 
-    getOrElse() {
-        return this.result;
+    filter(fn) {
+        ValidationUtil.validatePresenceOfFunction(fn)
+            .orThrow('(arg1 - function) not provided for function filter');
+        const shouldProceed = fn.call(this, this.result);
+        if (shouldProceed) {
+            return new Success(this.result);
+        } else {
+            return new Failure(new Error('Element did not match filter predicate'));
+        }
     }
 
     flatMap(fn) {
         ValidationUtil.validatePresenceOfFunction(fn)
             .orThrow('(arg1 - function) not provided for function flatMap');
         return fn.call(this, this.result);
+    }
+
+    getOrElse() {
+        return this.result;
     }
 
     isFailure() {

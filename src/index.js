@@ -1,12 +1,18 @@
 import Success from './lib/try-success';
 import Failure from './lib/try-failure';
+import TryPromise from './lib/try-promise';
 
 function of(fn) {
     if (!fn) {
         throw new Error('Function not provided for Try.of');
     } else {
         try {
-            return new Success(fn());
+            const result = fn();
+            if (result instanceof Promise) {
+                return new TryPromise(result);
+            } else {
+                return new Success(fn());
+            }
         } catch (err) {
             return new Failure(err);
         }

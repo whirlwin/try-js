@@ -36,7 +36,34 @@ class TryPromise {
         }).catch(err => ({ try_state: REJECTED })));
     }
 
+    onFailure(fn) {
+        return new TryPromise(this.promise.then(value => {
+            if (value.try_state === REJECTED) {
+                fn(value);
+            }
+            return value;
+        }).catch(err => ({ try_state: REJECTED })));
+    }
+
+    onSuccess(fn) {
+        return new TryPromise(this.promise.then(value => {
+            if (value.try_state !== REJECTED) {
+                fn(value);
+            }
+            return value;
+        }).catch(err => ({ try_state: REJECTED })));
+    }
+
     peek(fn) {
+        return new TryPromise(this.promise.then(value => {
+            if (value.try_state !== REJECTED) {
+                fn(value);
+            }
+            return value;
+        }).catch(err => ({ try_state: REJECTED })));
+    }
+
+    peekFailure(fn) {
         return new TryPromise(this.promise.then(value => {
             if (value.try_state !== REJECTED) {
                 fn(value);

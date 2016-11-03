@@ -54,6 +54,10 @@ class TryPromise {
         }).catch(err => ({ try_state: REJECTED })));
     }
 
+    orElse(fn) {
+
+    }
+
     peek(fn) {
         return new TryPromise(this.promise.then(value => {
             if (value.try_state !== REJECTED) {

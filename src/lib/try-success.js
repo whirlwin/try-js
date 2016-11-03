@@ -1,32 +1,31 @@
+import DeprecationUtil from './deprecation-util';
 import Failure from './try-failure';
 import Try from './try';
 import ValidationUtil from './validation-util';
 
 class Success extends Try {
 
-    constructor(result) {
-        super(null, result);
+    constructor(value) {
+        super(null, value);
     }
 
     filter(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow('(arg1 - function) not provided for function filter');
-        const shouldProceed = fn.call(this, this.result);
+        ValidationUtil.requireNonNull(fn,'(arg1 - function) not provided for function filter');
+        const shouldProceed = fn.call(this, this.value);
         if (shouldProceed) {
-            return new Success(this.result);
+            return new Success(this.value);
         } else {
             return new Failure(new Error('Element did not match filter predicate'));
         }
     }
 
     flatMap(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow('(arg1 - function) not provided for function flatMap');
-        return fn.call(this, this.result);
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function flatMap');
+        return fn.call(this, this.value);
     }
 
     getOrElse() {
-        return this.result;
+        return this.value;
     }
 
     isFailure() {
@@ -38,25 +37,37 @@ class Success extends Try {
     }
 
     map(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow('(arg1 - function) not provided for function map');
-        return new Success(fn(this.result));
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function map');
+        return new Success(fn(this.value));
+    }
+
+    onFailure(fn) {
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onFailure');
+        return new Success(this.value);
+    }
+
+    onSuccess(fn) {
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onSuccess');
+        fn(this.value);
+        return new Success(this.value);
+    }
+
+    orElse() {
+        return new Success(this.value);
     }
 
     peek(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow('(arg1 - function) not provided for function peek');
-        fn(this.result);
-        return new Success(this.result);
+        DeprecationUtil.notifyDeprecation('peek() is deprecated - use onSuccess instead');
+        this.onSuccess(fn);
     }
 
     peekFailure() {
-        return new Success(this.result);
+        return new Success(this.value);
     }
 
     resolve(successFn, failureFn) {
         super.resolve(successFn, failureFn);
-        return successFn(this.result);
+        return successFn(this.value);
     }
 }
 

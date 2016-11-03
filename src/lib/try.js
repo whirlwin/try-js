@@ -19,6 +19,12 @@ class Try {
 
     map() {}
 
+    onFailure() {}
+
+    onSuccess() {}
+
+    orElse() {}
+
     peek() {}
 
     peekFailure() {}

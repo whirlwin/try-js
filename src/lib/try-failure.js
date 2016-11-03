@@ -1,3 +1,4 @@
+import DeprecationUtil from './deprecation-util';
 import Try from './try';
 import ValidationUtil from './validation-util';
 
@@ -32,15 +33,29 @@ class Failure extends Try {
         return new Failure(this.err);
     }
 
+    onFailure(fn) {
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onFailure');
+        fn(this.result);
+        return new Failure(this.err);
+    }
+
+    onSuccess(fn) {
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onSuccess');
+        return new Failure(this.err);
+    }
+
+    orElse(fn) {
+        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function orElse');
+        return fn();
+    }
+
     peek() {
         return new Failure(this.err);
     }
 
     peekFailure(fn) {
-        ValidationUtil.validatePresenceOfFunction(fn)
-            .orThrow('(arg1 - function) not provided for peekFailure function');
-        fn(this.err);
-        return new Failure(this.err);
+        DeprecationUtil.notifyDeprecation('peekFailure() is deprecated - use onFailure instead');
+        return this.onFailure(fn);
     }
 
     resolve(successFn, failureFn) {

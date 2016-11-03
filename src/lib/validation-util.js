@@ -4,16 +4,14 @@ class ValidationUtil {
         this.validator = validator;
     }
 
-    static validatePresenceOfFunction(fn) {
-        return new ValidationUtil((errMsg) => {
-            if (!fn || typeof fn !== 'function') {
-                throw new Error(errMsg);
-            }
-        });
+    static requireNonNull(value, errMsg) {
+        if (value == null) {
+            throw new Error(errMsg);
+        }
     }
 
-    orThrow(errMsg) {
-        this.validator(errMsg);
+    static isFunction(fn) {
+        return fn != null && typeof fn === 'function';
     }
 }
 

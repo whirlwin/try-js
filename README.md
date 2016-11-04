@@ -37,6 +37,7 @@ Accepts a supplier function resulting in failure or success
 var newTry = Try.of(() => "foobar");
 ```
 
+---
 
 #### success
 
@@ -45,6 +46,8 @@ Static helper for  creating success try
 ```javascript
 var successTry = Try.success("foobar");
 ```
+
+---
 
 #### Try.failure(err) - Returns a new failure based Try
 Accepts an error

@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Try-js by whirlwin</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Try-js</h1>
+        <p>Type/construct for handling errors in Node.js.</p>
+
+        <p class="view"><a href="https://github.com/whirlwin/try-js">View the Project on GitHub <small>whirlwin/try-js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/whirlwin/try-js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/whirlwin/try-js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/whirlwin/try-js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="try-js" class="anchor" href="#try-js" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>try-js</h1>
+
+<p>Type / construct for handling errors in Node.js, inspired by Scala's Try type.</p>
+
+<p><a href="https://travis-ci.org/whirlwin/try-js"><img src="https://travis-ci.org/whirlwin/try-js.svg?branch=master" alt="Build Status"></a></p>
+
+<p>Example usage #1, happy case:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Try <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>try-js<span class="pl-pds">"</span></span>);
+
+<span class="pl-k">var</span> result <span class="pl-k">=</span> <span class="pl-smi">Try</span>.<span class="pl-en">of</span>(() <span class="pl-k">=&gt;</span> <span class="pl-c1">10</span>)
+    .<span class="pl-en">map</span>(<span class="pl-smi">res</span> <span class="pl-k">=&gt;</span> res <span class="pl-k">+</span> <span class="pl-c1">10</span>)
+    .<span class="pl-en">resolve</span>(<span class="pl-smi">res</span> <span class="pl-k">=&gt;</span> res,
+             <span class="pl-smi">err</span> <span class="pl-k">=&gt;</span> <span class="pl-k">-</span><span class="pl-c1">1</span>);
+
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(result); <span class="pl-c">// Prints 20</span></pre></div>
+
+<p>Example usage #2, failure case:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Try <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>try-js<span class="pl-pds">"</span></span>);
+
+<span class="pl-k">var</span> result <span class="pl-k">=</span> <span class="pl-smi">Try</span>.<span class="pl-en">of</span>(() <span class="pl-k">=&gt;</span> { <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-en">Error</span>(<span class="pl-s"><span class="pl-pds">"</span>Internal failure<span class="pl-pds">"</span></span>) })
+    .<span class="pl-en">map</span>(<span class="pl-smi">res</span> <span class="pl-k">=&gt;</span> res <span class="pl-k">+</span> <span class="pl-c1">10</span> )
+    .<span class="pl-en">resolve</span>(<span class="pl-smi">res</span> <span class="pl-k">=&gt;</span> res,
+             <span class="pl-smi">err</span> <span class="pl-k">=&gt;</span> <span class="pl-k">-</span><span class="pl-c1">1</span>);
+
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(result); <span class="pl-c">// Prints -1</span></pre></div>
+
+<h2>
+<a id="functions" class="anchor" href="#functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Functions</h2>
+
+<h6>
+<a id="tryofcomputefn---returns-new-try-instance" class="anchor" href="#tryofcomputefn---returns-new-try-instance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Try.of(computeFn) - Returns new Try instance</h6>
+
+<p>Accepts a function resulting in failure or success</p>
+
+<h6>
+<a id="trysuccessvalue---returns-a-new-success-based-try" class="anchor" href="#trysuccessvalue---returns-a-new-success-based-try" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Try.success(value) - Returns a new success based Try</h6>
+
+<p>Accepts a value</p>
+
+<h6>
+<a id="tryfailureerr---returns-a-new-failure-based-try" class="anchor" href="#tryfailureerr---returns-a-new-failure-based-try" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Try.failure(err) - Returns a new failure based Try</h6>
+
+<p>Accepts an error</p>
+
+<h6>
+<a id="tryfilterfilterfn---returns-a-success-or-failure-based-try" class="anchor" href="#tryfilterfilterfn---returns-a-success-or-failure-based-try" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Try.filter(filterFn) - Returns a success or failure based Try</h6>
+
+<p>Accepts a predicate that leads to a failure or success</p>
+
+<h6>
+<a id="flatmapflatmapfn---returns-a-flat-mapped-value" class="anchor" href="#flatmapflatmapfn---returns-a-flat-mapped-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.flatMap(flatMapFn) - Returns a flat mapped value</h6>
+
+<p>Accepts a function that transforms a nested Try</p>
+
+<h6>
+<a id="getorelsedefaultvalue---returns-the-value-or-default-value" class="anchor" href="#getorelsedefaultvalue---returns-the-value-or-default-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.getOrElse(defaultValue) - Returns the value or default value</h6>
+
+<p>Accepts a default value which is returned in case of failure, otherwise the value is returned</p>
+
+<h6>
+<a id="isfailure---returns-a-boolean" class="anchor" href="#isfailure---returns-a-boolean" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.isFailure() - Returns a boolean</h6>
+
+<p>Returns whether the Try is a Failure or not</p>
+
+<h6>
+<a id="issuccess---returns-a-boolean" class="anchor" href="#issuccess---returns-a-boolean" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.isSuccess() - Returns a boolean</h6>
+
+<p>Returns whether the Try is a Success or not</p>
+
+<h6>
+<a id="mapmapfn---returns-mapped-value" class="anchor" href="#mapmapfn---returns-mapped-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.map(mapFn) - Returns mapped value</h6>
+
+<p>Accepts function that transforms a value</p>
+
+<h6>
+<a id="orelsetryfn---returns-a-new-try" class="anchor" href="#orelsetryfn---returns-a-new-try" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.orElse(tryFn) - Returns a new try</h6>
+
+<p>Accepts a function with a try for Failure mapping</p>
+
+<h6>
+<a id="peekpeekfn---returns-itself-deprecated-use-onsuccess-instead" class="anchor" href="#peekpeekfn---returns-itself-deprecated-use-onsuccess-instead" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.peek(peekFn) - Returns itself (<em>deprecated: use onSuccess instead</em>)</h6>
+
+<p>Accepts a function used to peek at a success value without modifying the value</p>
+
+<h6>
+<a id="peekfailurepeekfailurefn---returns-itself-deprecated-use-onfailure-instead" class="anchor" href="#peekfailurepeekfailurefn---returns-itself-deprecated-use-onfailure-instead" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.peekFailure(peekFailureFn) - Returns itself (<em>deprecated: use onFailure instead</em>)</h6>
+
+<p>Accepts a function used to peek at a failure value without modifying the value</p>
+
+<h6>
+<a id="resolvesuccessfn-failurefn---returns-the-success-value-or-failure-value" class="anchor" href="#resolvesuccessfn-failurefn---returns-the-success-value-or-failure-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.resolve(successFn, failureFn) - Returns the success value or failure value</h6>
+
+<p>Accepts a success and failure function used to [fold](<a href="https://en.wikipedia.org/wiki/Fold_(higher-order_function)">https://en.wikipedia.org/wiki/Fold_(higher-order_function)</a> the Try to a single return value</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/whirlwin">whirlwin</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

@@ -30,8 +30,10 @@ console.log(result); // Prints -1
 ## Functions
 
 #### of
-Parameters: Supplier function to try
-Returns: Try which is either a Success or Failure
+##### Parameters:
+Supplier function to try
+##### Returns:
+Try which is either a Success or Failure
 
 Accepts a function resulting in failure or success
 

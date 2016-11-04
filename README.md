@@ -29,7 +29,10 @@ console.log(result); // Prints -1
 
 ## Functions
 
-##### Try.of(computeFn) - Returns new Try instance
+##### of
+Parameters: Supplier function to try
+Returns: Try which is either a Success or Failure
+
 Accepts a function resulting in failure or success
 
 ##### Try.success(value) - Returns a new success based Try

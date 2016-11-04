@@ -5,7 +5,7 @@ Type/construct for handling errors in Node.js, inspired by Scala's Try type.
 
 Example usage #1, happy case:
 ```javascript
-var Try = require("try-js");
+var Try = require('try-js');
 
 var result = Try.of(() => 10)
     .map(res => res + 10)
@@ -17,9 +17,9 @@ console.log(result); // Prints 20
 
 Example usage #2, failure case:
 ```javascript
-var Try = require("try-js");
+var Try = require('try-js');
 
-var result = Try.of(() => { throw new Error("Internal failure") })
+var result = Try.of(() => { throw new Error('Internal failure') })
     .map(res => res + 10 )
     .resolve(res => res,
              err => -1);
@@ -31,28 +31,45 @@ console.log(result); // Prints -1
 
 #### of
 
-Accepts a supplier function resulting in failure or success
+Accepts a supplier function resulting in a failure or success Try.
 
 ```javascript
-var newTry = Try.of(() => "foobar");
+var newTry = Try.of(() => 'foobar');
 ```
 
 ---
 
 #### success
 
-Static helper for  creating success try 
+Static helper for creating a success Try.
 
 ```javascript
-var successTry = Try.success("foobar");
+var successTry = Try.success('Yay! It worked!');
 ```
 
 ---
 
-#### Try.failure(err) - Returns a new failure based Try
-Accepts an error
+#### failure
 
-#### Try.filter(filterFn) - Returns a success or failure based Try
+Static helper for creating a failure Try.
+
+```javascript
+var failureTry = Try.failure('Aw. It failed...');
+```
+
+---
+
+#### filter
+
+Method for filtering, where a predicate match results in a success try, and a failure
+
+```javascript
+var successTry = Try.of(() => 100)
+    .filter(value => value > 50);
+```
+
+---
+
 Accepts a predicate that leads to a failure or success
 
 #### .flatMap(flatMapFn) - Returns a flat mapped value

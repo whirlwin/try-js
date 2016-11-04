@@ -137,18 +137,26 @@ var twentySuccessTry = Try.of(() => 10)
 
 #### orElse
 
-Accepts a function with a try for Failure mapping.
+Accepts a function with a another try for Failure mapping.
 
 ```javascript
 var successTry = Try.of(() => { throw new Error('Oops'); })
     .orElse(() => Try.of(() => 'Much better'));
 ```
 
-#### .peek(peekFn) - Returns itself (*deprecated: use onSuccess instead*)
-Accepts a function used to peek at a success value without modifying the value
+---
 
-#### .peekFailure(peekFailureFn) - Returns itself (*deprecated: use onFailure instead*)
-Accepts a function used to peek at a failure value without modifying the value
+#### resolve
 
-#### .resolve(successFn, failureFn) - Returns the success value or failure value
-Accepts a success and failure function used to [fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function) the Try to a single return value
+Returns the success value or failure value. Accepts a success and failure function used to
+[fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) the Try to a single return value.
+
+```javascript
+var helloWorld = Try.of(() => 'Hello')
+    .resolve(value => value + ' World', err => ' Errr....');
+```
+
+```javascript
+var badStuff = Try.of(() => { throw new Error('Bad stuff'); })
+    .resolve(value => value + 'Good things', err => err);
+```

@@ -27,18 +27,24 @@ var result = Try.of(() => { throw new Error("Internal failure") })
 console.log(result); // Prints -1
 ```
 
-## Functions
+## API doc
 
 #### of
-##### Parameters:
-Supplier function to try
-##### Returns:
-Try which is either a Success or Failure
 
-Accepts a function resulting in failure or success
+Accepts a supplier function resulting in failure or success
 
-#### Try.success(value) - Returns a new success based Try
-Accepts a value
+```javascript
+var newTry = Try.of(() => "foobar");
+```
+
+
+#### success
+
+Static helper for  creating success try 
+
+```javascript
+var successTry = Try.success("foobar");
+```
 
 #### Try.failure(err) - Returns a new failure based Try
 Accepts an error

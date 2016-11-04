@@ -41,7 +41,7 @@ var newTry = Try.of(() => 'foobar');
 
 #### success
 
-Static helper for creating a success Try.
+Static helper function for creating a success Try.
 
 ```javascript
 var successTry = Try.success('Yay! It worked!');
@@ -51,7 +51,7 @@ var successTry = Try.success('Yay! It worked!');
 
 #### failure
 
-Static helper for creating a failure Try.
+Static helper function for creating a failure Try.
 
 ```javascript
 var failureTry = Try.failure('Aw. It failed...');
@@ -61,34 +61,88 @@ var failureTry = Try.failure('Aw. It failed...');
 
 #### filter
 
-Method for filtering, where a predicate match results in a success try, and a failure
+Function for filtering, where a predicate match results in a success try, and a failure.
 
 ```javascript
 var successTry = Try.of(() => 100)
     .filter(value => value > 50);
 ```
+    
+```javascript
+var failureTry = Try.of(() => 20)
+    .filter(value => value > 50);
+```
 
 ---
 
-Accepts a predicate that leads to a failure or success
+#### flatMap
 
-#### .flatMap(flatMapFn) - Returns a flat mapped value
-Accepts a function that transforms a nested Try
+Function for mapping on another Try, used to flatten a nested Try instances.
 
-#### .getOrElse(defaultValue) - Returns the value or default value
-Accepts a default value which is returned in case of failure, otherwise the value is returned
+```javascript
+var successTry = Try.of(() => 'Some value')
+    .flatMap(value => Try.of(() => 'Something else'));
+```
 
-#### .isFailure() - Returns a boolean
-Returns whether the Try is a Failure or not
+```javascript
+var failureTry = Try.of(() => 'Some value')
+    .flatMap(value => Try.of(() => { throw new Error('Oh snap!'); }));
+```
 
-#### .isSuccess() - Returns a boolean
-Returns whether the Try is a Success or not
+---
 
-#### .map(mapFn) - Returns mapped value
-Accepts function that transforms a value
+#### getOrElse
 
-#### .orElse(tryFn) - Returns a new try
-Accepts a function with a try for Failure mapping
+Accepts a default value which is returned in case of failure, otherwise the value is returned.
+
+```javascript
+var two = Try.of(() => { throw new Error('one'); })
+    .getOrElse(2);
+```
+
+---
+
+#### isFailure
+
+Returns whether the Try is a Failure or not.
+
+```javascript
+var correct = Try.of(() => { throw new Error(); })
+    .isFailure();
+```
+
+---
+
+#### isSuccess
+
+Returns whether the Try is a Success or not.
+
+```javascript
+var correct = Try.of(() => 'Victory!')
+    .isSuccess();
+```
+
+---
+
+#### map
+
+Accepts function that transforms a value if the current Try is a success Try.
+
+```javascript
+var twentySuccessTry = Try.of(() => 10)
+    .map(value => value + 10);
+```
+
+---
+
+#### orElse
+
+Accepts a function with a try for Failure mapping.
+
+```javascript
+var successTry = Try.of(() => { throw new Error('Oops'); })
+    .orElse(() => Try.of(() => 'Much better'));
+```
 
 #### .peek(peekFn) - Returns itself (*deprecated: use onSuccess instead*)
 Accepts a function used to peek at a success value without modifying the value

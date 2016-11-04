@@ -29,44 +29,44 @@ console.log(result); // Prints -1
 
 ## Functions
 
-##### of
+#### of
 Parameters: Supplier function to try
 Returns: Try which is either a Success or Failure
 
 Accepts a function resulting in failure or success
 
-##### Try.success(value) - Returns a new success based Try
+#### Try.success(value) - Returns a new success based Try
 Accepts a value
 
-##### Try.failure(err) - Returns a new failure based Try
+#### Try.failure(err) - Returns a new failure based Try
 Accepts an error
 
-##### Try.filter(filterFn) - Returns a success or failure based Try
+#### Try.filter(filterFn) - Returns a success or failure based Try
 Accepts a predicate that leads to a failure or success
 
-##### .flatMap(flatMapFn) - Returns a flat mapped value
+#### .flatMap(flatMapFn) - Returns a flat mapped value
 Accepts a function that transforms a nested Try
 
-##### .getOrElse(defaultValue) - Returns the value or default value
+#### .getOrElse(defaultValue) - Returns the value or default value
 Accepts a default value which is returned in case of failure, otherwise the value is returned
 
-##### .isFailure() - Returns a boolean
+#### .isFailure() - Returns a boolean
 Returns whether the Try is a Failure or not
 
-##### .isSuccess() - Returns a boolean
+#### .isSuccess() - Returns a boolean
 Returns whether the Try is a Success or not
 
-##### .map(mapFn) - Returns mapped value
+#### .map(mapFn) - Returns mapped value
 Accepts function that transforms a value
 
-##### .orElse(tryFn) - Returns a new try
+#### .orElse(tryFn) - Returns a new try
 Accepts a function with a try for Failure mapping
 
-##### .peek(peekFn) - Returns itself (*deprecated: use onSuccess instead*)
+#### .peek(peekFn) - Returns itself (*deprecated: use onSuccess instead*)
 Accepts a function used to peek at a success value without modifying the value
 
-##### .peekFailure(peekFailureFn) - Returns itself (*deprecated: use onFailure instead*)
+#### .peekFailure(peekFailureFn) - Returns itself (*deprecated: use onFailure instead*)
 Accepts a function used to peek at a failure value without modifying the value
 
-##### .resolve(successFn, failureFn) - Returns the success value or failure value
+#### .resolve(successFn, failureFn) - Returns the success value or failure value
 Accepts a success and failure function used to [fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function) the Try to a single return value

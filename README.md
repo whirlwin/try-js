@@ -124,6 +124,28 @@ var correct = Try.of(() => 'Victory!')
 
 ---
 
+#### onFailure
+
+Function for performing an operation on the failure Try. Disregards the return value of the provided function.
+
+```javascript
+var failureTry = Try.of(() => { throw new Error('Critical failure') })
+    .onFailure(err => console.error(err));
+```
+
+---
+
+#### onSuccess
+
+Function for performing an operation on the success Try. Disregards the return value of the provided function.
+
+```javascript
+var successTry = Try.of(() => { throw new Error('Superb win') })
+    .onSuccess(value => console.log(value));
+```
+
+---
+
 #### map
 
 Accepts function that transforms a value if the current Try is a success Try.

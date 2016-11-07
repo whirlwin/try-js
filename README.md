@@ -9,8 +9,7 @@ var Try = require('try-js');
 
 var result = Try.of(() => 10)
     .map(res => res + 10)
-    .resolve(res => res,
-             err => -1);
+    .getOrElse(-1);
 
 console.log(result); // Prints 20
 ```
@@ -21,8 +20,7 @@ var Try = require('try-js');
 
 var result = Try.of(() => { throw new Error('Internal failure') })
     .map(res => res + 10 )
-    .resolve(res => res,
-             err => -1);
+    .getOrElse(-1);
 
 console.log(result); // Prints -1
 ```

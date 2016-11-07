@@ -2,9 +2,9 @@ import ValidationUtil from './validation-util';
 
 class Try {
 
-    constructor(err, result) {
+    constructor(err, value) {
         this.err = err;
-        this.result = result;
+        this.value = value;
     }
 
     filter() {}

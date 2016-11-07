@@ -35,7 +35,7 @@ class Failure extends Try {
 
     onFailure(fn) {
         ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onFailure');
-        fn(this.result);
+        fn(this.err);
         return new Failure(this.err);
     }
 

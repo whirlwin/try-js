@@ -30,4 +30,22 @@ mocha.describe('Success', () => {
         });
 
     });
+
+    mocha.describe('.flapMap()', () => {
+
+        mocha.it('should flat map success try value', () => {
+            let success = Try.success(100)
+                .flatMap(value => Try.success(value + 10));
+            assert(success.isSuccess());
+            assert.equal(success.value, 110);
+        });
+
+        mocha.it('should not flat map failure try value', () => {
+            let failure = Try.success(100)
+                .flatMap(value => Try.failure('Something went wrong'));
+            assert(failure.isFailure());
+            assert.equal(failure.err, 'Something went wrong');
+        });
+
+    });
 });

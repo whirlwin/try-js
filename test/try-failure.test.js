@@ -1,3 +1,4 @@
+/*
 var Try = require('../dist/index');
 
 var r = Try.of(() => { throw Error('foo bar baz'); })
@@ -11,4 +12,5 @@ var x = Try.of(() => new Promise((resolve, reject) => { resolve(10) }))
     .onSuccess(v => console.log(v));
 
 //console.log(x)
+*/
 

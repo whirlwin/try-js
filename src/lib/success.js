@@ -10,9 +10,9 @@ class Success extends Try {
     }
 
     filter(fn) {
-        ValidationUtil.requireNonNull(fn,'(arg1 - function) not provided for function filter');
-        const shouldProceed = fn.call(this, this.value);
-        if (shouldProceed) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function filter');
+        const predicateMatch = fn.call(this, this.value);
+        if (predicateMatch) {
             return new Success(this.value);
         } else {
             return new Failure(new Error('Element did not match filter predicate'));

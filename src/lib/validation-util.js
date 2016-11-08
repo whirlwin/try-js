@@ -10,6 +10,12 @@ class ValidationUtil {
         }
     }
 
+    static requireNonNullFunction(value, errMsg) {
+        if (this.value === null || typeof this.value === 'function') {
+            throw new Error(errMsg);
+        }
+    }
+
     static isFunction(fn) {
         return fn != null && typeof fn === 'function';
     }

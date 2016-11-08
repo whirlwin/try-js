@@ -1,5 +1,4 @@
 const assert = require('assert');
-const chai = require('chai');
 const mocha = require('mocha');
 const Try = require('../dist');
 
@@ -45,6 +44,16 @@ mocha.describe('Success', () => {
                 .flatMap(value => Try.failure('Something went wrong'));
             assert(failure.isFailure());
             assert.equal(failure.err, 'Something went wrong');
+        });
+
+        mocha.it('should throw error when function argument is not present', () => {
+            let success = Try.success(100);
+            assert.throws(() => success.flatMap());
+        });
+
+        mocha.it('should throw error when function argument is not a function', () => {
+            let success = Try.success(100);
+            assert.throws(() => success.flatMap({}));
         });
 
     });

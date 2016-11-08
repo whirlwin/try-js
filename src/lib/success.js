@@ -20,7 +20,7 @@ class Success extends Try {
     }
 
     flatMap(fn) {
-        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function flatMap');
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
         return fn.call(this, this.value);
     }
 

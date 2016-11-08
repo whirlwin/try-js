@@ -1,5 +1,5 @@
-import Success from './lib/try-success';
-import Failure from './lib/try-failure';
+import Success from './lib/success';
+import Failure from './lib/failure';
 import TryPromise from './lib/try-promise';
 
 function of(fn) {

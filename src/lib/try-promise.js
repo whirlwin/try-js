@@ -1,7 +1,8 @@
-import Success from './try-success';
-import Failure from './try-failure';
+import Success from './success';
+import Failure from './failure';
 
 const REJECTED = 'rejected';
+const RESOLVED = 'resolved';
 
 class TryPromise {
 
@@ -13,6 +14,7 @@ class TryPromise {
         return new TryPromise(this.promise.then(value => {
             if (value.try_state !== REJECTED) {
                 const result = fn(value);
+                console.log(result);
                 if (result instanceof Success) {
                     return result.result;
                 } else if (result instanceof Failure) {

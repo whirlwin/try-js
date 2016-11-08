@@ -1,5 +1,5 @@
 import DeprecationUtil from './deprecation-util';
-import Failure from './try-failure';
+import Failure from './failure';
 import Try from './try';
 import ValidationUtil from './validation-util';
 

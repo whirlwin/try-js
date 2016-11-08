@@ -5,4 +5,10 @@ var r = Try.of(() => { throw Error('foo bar baz'); })
     .map(val => val + 2)
     .getOrElse(6);
 
-console.log(r);
+var x = Try.of(() => new Promise((resolve, reject) => { resolve(10) }))
+    .flatMap(v => new Promise((resolve, reject) => { resolve(v + 2) }))
+    .map(v => v + 20)
+    .onSuccess(v => console.log(v));
+
+//console.log(x)
+

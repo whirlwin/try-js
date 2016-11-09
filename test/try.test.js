@@ -7,24 +7,24 @@ mocha.describe('Success', () => {
     mocha.describe('.filter()', () => {
 
         mocha.it('should return success when filter predicate matches', () => {
-            let success = Try.success(100)
+            var success = Try.success(100)
                 .filter(value => value > 50);
             assert(success.isSuccess());
         });
 
         mocha.it('should return failure when predicate does not match', () => {
-            let success = Try.success(100)
+            var success = Try.success(100)
                 .filter(value => value > 500);
             assert(success.isFailure());
         });
 
         mocha.it('should throw error when function argument is not present', () => {
-            let success = Try.success(100);
+            var success = Try.success(100);
             assert.throws(() => success.filter());
         });
 
         mocha.it('should throw error when function argument is not a function', () => {
-            let success = Try.success(100);
+            var success = Try.success(100);
             assert.throws(() => success.filter({}), Error);
         });
 
@@ -33,26 +33,26 @@ mocha.describe('Success', () => {
     mocha.describe('.flapMap()', () => {
 
         mocha.it('should flat map success try value', () => {
-            let success = Try.success(100)
+            var success = Try.success(100)
                 .flatMap(value => Try.success(value + 10));
             assert(success.isSuccess());
             assert.equal(success.value, 110);
         });
 
         mocha.it('should not flat map failure try value', () => {
-            let failure = Try.success(100)
+            var failure = Try.success(100)
                 .flatMap(value => Try.failure('Something went wrong'));
             assert(failure.isFailure());
             assert.equal(failure.err, 'Something went wrong');
         });
 
         mocha.it('should throw error when function argument is not present', () => {
-            let success = Try.success(100);
+            var success = Try.success(100);
             assert.throws(() => success.flatMap());
         });
 
         mocha.it('should throw error when function argument is not a function', () => {
-            let success = Try.success(100);
+            var success = Try.success(100);
             assert.throws(() => success.flatMap({}));
         });
 

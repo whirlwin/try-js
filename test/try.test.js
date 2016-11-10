@@ -57,4 +57,21 @@ mocha.describe('Success', () => {
         });
 
     });
+
+    mocha.describe('.getOrElse()', () => {
+
+        mocha.it('should get alternative value upon failure', () => {
+            var failure = Try.failure('Boom!');
+            assert.equal(failure.getOrElse('foobar'), 'foobar');
+        });
+    });
+
+    mocha.describe('.isFailure()', () => {
+
+        mocha.it('should be failure when failure', () => {
+            var failure = Try.failure('Oh no!');
+            assert(failure.isFailure());
+        });
+
+    });
 });

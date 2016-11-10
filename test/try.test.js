@@ -75,7 +75,7 @@ mocha.describe('Success', () => {
 
         mocha.it('should indicate that a success is not a failure', () => {
             let success = Try.success(100);
-            assert(!failure.isFailure());
+            assert(!success.isFailure());
         });
 
     });

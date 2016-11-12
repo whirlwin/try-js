@@ -27,7 +27,6 @@ mocha.describe('Success', () => {
             let success = Try.success(100);
             assert.throws(() => success.filter({}), Error);
         });
-
     });
 
     mocha.describe('.flapMap()', () => {
@@ -55,7 +54,6 @@ mocha.describe('Success', () => {
             let success = Try.success(100);
             assert.throws(() => success.flatMap({}));
         });
-
     });
 
     mocha.describe('.getOrElse()', () => {
@@ -77,6 +75,29 @@ mocha.describe('Success', () => {
             let success = Try.success(100);
             assert(!success.isFailure());
         });
+    });
 
+    mocha.describe('.isSuccess()', () => {
+
+        mocha.it('should indicate that a success is a success', () => {
+            let success = Try.success(100);
+            assert(success.isSuccess());
+        });
+
+        mocha.it('should indicate that a failure is not a success', () => {
+            let failure = Try.failure('Hmpf!');
+            assert(!failure.isSuccess());
+        });
+    });
+
+    mocha.describe('.map()', () => {
+
+        mocha.it('should map a success value', () => {
+            let value = Try.success(100)
+                .map(value => value + 10)
+                .get();
+
+            assert.equal(value, 110);
+        });
     });
 });

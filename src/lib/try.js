@@ -11,6 +11,8 @@ class Try {
 
     flatMap() {}
 
+    get() {}
+
     getOrElse() {}
 
     isFailure() {}
@@ -25,15 +27,9 @@ class Try {
 
     orElse() {}
 
-    peek() {}
-
-    peekFailure() {}
-
     resolve(successFn, failureFn) {
-        ValidationUtil.validatePresenceOfFunction(successFn)
-            .orThrow('(arg 1 - function) not provided for function resolve');
-        ValidationUtil.validatePresenceOfFunction(failureFn)
-            .orThrow('(arg 2 - function) not provided for function resolve');
+        ValidationUtil.requireNonNullFunction(successFn, '(arg 1 - function) not provided for function resolve');
+        ValidationUtil.requireNonNullFunction(failureFn, '(arg 2 - function) not provided for function resolve');
     }
 }
 

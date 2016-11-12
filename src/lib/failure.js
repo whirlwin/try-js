@@ -17,6 +17,10 @@ class Failure extends Try {
         return new Failure(this.err);
     }
 
+    get() {
+        throw new Error('Cannot call get on a failure Try');
+    }
+
     getOrElse(value) {
         return value;
     }

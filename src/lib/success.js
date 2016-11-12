@@ -24,6 +24,10 @@ class Success extends Try {
         return fn.call(this, this.value);
     }
 
+    get() {
+        return this.value;
+    }
+
     getOrElse() {
         return this.value;
     }

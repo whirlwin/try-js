@@ -1,9 +1,5 @@
 class ValidationUtil {
 
-    constructor(validator) {
-        this.validator = validator;
-    }
-
     static requireNonNull(value, errMsg) {
         if (value == null) {
             throw new Error(errMsg);
@@ -11,7 +7,7 @@ class ValidationUtil {
     }
 
     static requireNonNullFunction(value, errMsg) {
-        if (this.value === null || typeof this.value === 'function') {
+        if (value === null || typeof value !== 'function') {
             throw new Error(errMsg);
         }
     }

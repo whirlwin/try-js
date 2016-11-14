@@ -27,6 +27,10 @@ console.log(result); // Prints -1
 
 ## API doc
 
+### Methods
+
+- [of](#of)
+
 #### of
 
 Accepts a supplier function resulting in a failure or success Try.

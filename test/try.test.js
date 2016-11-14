@@ -99,5 +99,47 @@ mocha.describe('Success', () => {
 
             assert.equal(value, 110);
         });
+
+        mocha.it('should not map a failure value', () => {
+            let failure = Try.failure('Nope')
+                .map(value => {
+                    assert.fail(null, null, 'should not be called: value ' + value, null);
+                    throw new Error('Not happening');
+                });
+        });
+    });
+
+    mocha.describe('.onFailure()', () => {
+
+        mocha.it('should trigger on a failure', () => {
+            let hasBeenInvoked = false;
+            Try.failure('No')
+                .onFailure(err => hasBeenInvoked = true);
+            assert(hasBeenInvoked);
+        });
+
+        mocha.it('should not trigger on a success', () => {
+            let hasBeenIvoked = false;
+            Try.success(100)
+                .onFailure(err => hasBeenIvoked = true);
+            assert(!hasBeenIvoked);
+        });
+    });
+
+    mocha.describe('.onSuccess', () => {
+
+        mocha.it('should trigger on a success', () => {
+            let hasBeenInvoked = false;
+            Try.success(100)
+                .onSuccess(value => hasBeenInvoked = true);
+            assert(hasBeenInvoked);
+        });
+
+        mocha.it('should not trigger on a failure', () => {
+            let hasBeenInvoked = false;
+            Try.failure('Args!')
+                .onSuccess(value => hasBeenInvoked = true);
+            assert(!hasBeenInvoked);
+        });
     });
 });

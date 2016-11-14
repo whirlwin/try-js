@@ -142,4 +142,20 @@ mocha.describe('Success', () => {
             assert(!hasBeenInvoked);
         });
     });
+
+    mocha.describe('.orElse', () => {
+
+        mocha.it('should invoke another try on failure', () => {
+            let success = Try.failure('Errrrr')
+                .orElse(() => Try.success(1234));
+            assert.equal(success.get(), 1234);
+        });
+
+        mocha.it('should not invoke another try on success', () => {
+            let value = Try.success(100)
+                .orElse(() => Try.success(1234))
+                .get();
+            assert.equal(value, 100);
+        });
+    });
 });

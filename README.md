@@ -33,14 +33,14 @@ console.log(result); // Prints -1
 - [success](#success)
 - [failure](#failure)
 - [filter](#filter)
-- [flatMap](#flatMap)
-- [getOrElse](#getOrElse)
-- [isFailure](#isFailure)
-- [isSuccess](#isSuccess)
-- [onFailure](#onFailure)
-- [onSuccess](#onSuccess)
+- [flatMap](#flatmap)
+- [getOrElse](#getorelse)
+- [isFailure](#isfailure)
+- [isSuccess](#issuccess)
+- [onFailure](#onfailure)
+- [onSuccess](#onsuccess)
 - [map](#map)
-- [orElse](#orElse)
+- [orElse](#orelse)
 
 #### of
 

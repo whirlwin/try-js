@@ -27,9 +27,20 @@ console.log(result); // Prints -1
 
 ## API doc
 
-### Methods
+### Table of functions
 
 - [of](#of)
+- [success](#success)
+- [failure](#failure)
+- [filter](#filter)
+- [flatMap](#flatMap)
+- [getOrElse](#getOrElse)
+- [isFailure](#isFailure)
+- [isSuccess](#isSuccess)
+- [onFailure](#onFailure)
+- [onSuccess](#onSuccess)
+- [map](#map)
+- [orElse](#orElse)
 
 #### of
 
@@ -168,19 +179,3 @@ var successTry = Try.of(() => { throw new Error('Oops'); })
     .orElse(() => Try.of(() => 'Much better'));
 ```
 
----
-
-#### resolve
-
-Returns the success value or failure value. Accepts a success and failure function used to
-[fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) the Try to a single return value.
-
-```javascript
-var helloWorld = Try.of(() => 'Hello')
-    .resolve(value => value + ' World', err => ' Errr....');
-```
-
-```javascript
-var badStuff = Try.of(() => { throw new Error('Bad stuff'); })
-    .resolve(value => value + 'Good things', err => err);
-```

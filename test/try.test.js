@@ -33,16 +33,21 @@ mocha.describe('Success', () => {
             assert.throws(() => success.filter({}), Error);
         });
 
-        mocha.it('should return promised success when filter predicate matches', done => {
+        mocha.it('should return success promise when filter predicate matches', done => {
             Try.of(() => Promise.resolve(100))
                 .filter(value => value > 50)
                 .onSuccess(value => done());
         });
 
-        mocha.it('should return promised failure when filter predicate does not match', (done) => {
+        mocha.it('should return failure promise when filter predicate does not match', (done) => {
             Try.of(() => Promise.resolve(100))
                 .filter(value => value > 500)
                 .onFailure(err => done());
+        });
+
+        mocha.it('should not invoke filter for failure promise', () => {
+            Try.of(() => Promise.reject('Err'))
+                .filter(value => assert.fail(null, null, 'should not be invoked: ' + value, null));
         });
     });
 
@@ -55,19 +60,24 @@ mocha.describe('Success', () => {
             assert.equal(success.value, 110);
         });
 
-        mocha.it('should not flat map failure try value', () => {
+        mocha.it('should flat map failure try value', () => {
             let failure = Try.success(100)
                 .flatMap(value => Try.failure('Something went wrong'));
             assert(failure.isFailure());
             assert.equal(failure.err, 'Something went wrong');
         });
 
-        mocha.it('should throw error when function argument is not present', () => {
+        mocha.it('should not flat map on failure', () => {
+            Try.failure('Err')
+                .flatMap(value => assert.fail(null, null, 'should not be invoked: ' + value, null));
+        });
+
+        mocha.it('should throw error when filter argument is not present', () => {
             let success = Try.success(100);
             assert.throws(() => success.flatMap());
         });
 
-        mocha.it('should throw error when function argument is not a function', () => {
+        mocha.it('should throw error when filter argument is not a function', () => {
             let success = Try.success(100);
             assert.throws(() => success.flatMap({}));
         });

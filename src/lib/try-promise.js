@@ -1,5 +1,6 @@
 import Success from './success';
 import Failure from './failure';
+import ValidationUtil from './validation-util';
 
 const REJECTED = 'rejected';
 const RESOLVED = 'resolved';
@@ -12,6 +13,7 @@ class TryPromise {
 
     filter(fn) {
         return new TryPromise(this.promise.then(value => {
+            ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function filter');
             if (value.try_state !== REJECTED) {
                 let predicateMatch = fn(value);
                 if (predicateMatch) {
@@ -25,6 +27,7 @@ class TryPromise {
 
     flatMap(fn) {
         return new TryPromise(this.promise.then(value => {
+            ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
             if (value.try_state !== REJECTED) {
                 let result = fn(value);
                 if (result instanceof Success) {

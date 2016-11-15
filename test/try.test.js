@@ -18,6 +18,11 @@ mocha.describe('Success', () => {
             assert(success.isFailure());
         });
 
+        mocha.it('should not invoke filter for failure', () => {
+            Try.failure('Err')
+                .filter(value => assert.fail(null, null, 'should not be invoked: value ' + value, null))
+        });
+
         mocha.it('should throw error when function argument is not present', () => {
             let success = Try.success(100);
             assert.throws(() => success.filter());
@@ -26,6 +31,18 @@ mocha.describe('Success', () => {
         mocha.it('should throw error when function argument is not a function', () => {
             let success = Try.success(100);
             assert.throws(() => success.filter({}), Error);
+        });
+
+        mocha.it('should return promised success when filter predicate matches', done => {
+            Try.of(() => Promise.resolve(100))
+                .filter(value => value > 50)
+                .onSuccess(value => done());
+        });
+
+        mocha.it('should return promised failure when filter predicate does not match', (done) => {
+            Try.of(() => Promise.resolve(100))
+                .filter(value => value > 500)
+                .onFailure(err => done());
         });
     });
 

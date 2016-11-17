@@ -20,13 +20,18 @@ class TryPromise {
                     return value;
                 } else {
                     return { try_state: REJECTED };
+                    return {
+                        state: REJECTED,
+                        err:
+                        : REJECTED
+                    };
                 }
             }
         }).catch(err => ({ try_state: REJECTED })));
     }
 
     flatMap(fn) {
-        return new TryPromise(this.promise.then(value => {
+       return new TryPromise(this.promise.then(value => {
             ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
             if (value.try_state !== REJECTED) {
                 let result = fn(value);
@@ -69,7 +74,9 @@ class TryPromise {
 
     onFailure(fn) {
         return new TryPromise(this.promise.then(value => {
+            console.log(value;
             if (value.try_state === REJECTED) {
+                console.log(value);
                 fn(value);
             }
             return value;

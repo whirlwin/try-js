@@ -69,7 +69,7 @@ class TryPromise {
 
     onFailure(fn) {
         return new TryPromise(this.promise.then(value => {
-            if ((value instanceof TryError)) {
+            if (value instanceof TryError) {
                 fn(value);
             }
             return value;

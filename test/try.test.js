@@ -1,6 +1,7 @@
 const assert = require('assert');
 const mocha = require('mocha');
 const Try = require('../dist');
+const TryError = require('../dist/lib/try-error');
 
 mocha.describe('Success', () => {
 
@@ -31,6 +32,15 @@ mocha.describe('Success', () => {
         mocha.it('should throw error when function argument is not a function', () => {
             let success = Try.success(100);
             assert.throws(() => success.filter({}), Error);
+        });
+
+        mocha.it('should yield TryError when filter predicate does not match', done => {
+            Try.of(() => Promise.resolve(100))
+                .filter(value => value > 500)
+                .onFailure(err => {
+                    assert(err instanceof TryError.default);
+                    done();
+                });
         });
 
         mocha.it('should return success promise when filter predicate matches', done => {

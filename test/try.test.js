@@ -46,7 +46,10 @@ mocha.describe('Success', () => {
         mocha.it('should return success promise when filter predicate matches', done => {
             Try.of(() => Promise.resolve(100))
                 .filter(value => value > 50)
-                .onSuccess(value => done());
+                .onSuccess(value => {
+                    assert.equal(value, 100);
+                    done();
+                });
         });
 
         mocha.it('should return failure promise when filter predicate does not match', (done) => {

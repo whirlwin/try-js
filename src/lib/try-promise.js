@@ -1,9 +1,7 @@
 import Success from './success';
 import Failure from './failure';
+import TryError from './try-error';
 import ValidationUtil from './validation-util';
-
-const REJECTED = 'rejected';
-const RESOLVED = 'resolved';
 
 class TryPromise {
 
@@ -14,38 +12,35 @@ class TryPromise {
     filter(fn) {
         return new TryPromise(this.promise.then(value => {
             ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function filter');
-            if (value.try_state !== REJECTED) {
+            if (!(value instanceof TryError)) {
                 let predicateMatch = fn(value);
                 if (predicateMatch) {
                     return value;
                 } else {
-                    return { try_state: REJECTED };
-                    return {
-                        state: REJECTED,
-                        err:
-                        : REJECTED
-                    };
+                    return new TryError(`filter did not match for value ${value}`);
                 }
+            } else {
+                return value;
             }
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err) ));
     }
 
     flatMap(fn) {
        return new TryPromise(this.promise.then(value => {
             ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
-            if (value.try_state !== REJECTED) {
+            if (!(value instanceof TryError)) {
                 let result = fn(value);
                 if (result instanceof Success) {
                     return result.result;
                 } else if (result instanceof Failure) {
-                    return { try_state: REJECTED };
+                    return new TryError(`flatMap yielded failure for value ${value}`);
                 } else {
                     return result.promise;
                 }
             } else {
                 return value;
             }
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err) ));
     }
 
     get() {
@@ -54,59 +49,57 @@ class TryPromise {
 
     getOrElse(val) {
         return new TryPromise(this.promise.then(value => {
-            if (value.try_state !== REJECTED) {
+            if (!(value instanceof TryError)) {
                 return val;
             } else {
                 return value;
             }
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err)));
     }
 
     map(fn) {
         return new TryPromise(this.promise.then(value => {
-            if (value.try_state !== REJECTED) {
+            if (!(value instanceof TryError)) {
                 return fn(value);
             } else {
                 return value;
             }
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err)));
     }
 
     onFailure(fn) {
         return new TryPromise(this.promise.then(value => {
-            console.log(value;
-            if (value.try_state === REJECTED) {
-                console.log(value);
+            if ((value instanceof TryError)) {
                 fn(value);
             }
             return value;
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err)));
     }
 
     onSuccess(fn) {
         return new TryPromise(this.promise.then(value => {
-            if (value.try_state !== REJECTED) {
+            if (!(value instanceof TryError)) {
                 fn(value);
             }
             return value;
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err)));
     }
 
     orElse(fn) {
         return new TryPromise(this.promise.then(value => {
-            if (value.try_state === REJECTED) {
+            if (!(value instanceof TryError)) {
                 let result = fn(value);
                 if (result instanceof Success) {
                     return result.result;
                 } else if (result instanceof Failure) {
-                    return { try_state: REJECTED };
+                    return new TryError(`orElse yielded failure for value ${value}`);
                 } else {
                     return result.promise;
                 }
             } else {
                 return value;
             }
-        }).catch(err => ({ try_state: REJECTED })));
+        }).catch(err => new TryError(err)));
     }
 }
 

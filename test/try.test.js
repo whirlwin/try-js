@@ -50,7 +50,7 @@ mocha.describe('Success', () => {
         });
 
         mocha.it('should return failure promise when filter predicate does not match', (done) => {
-            Try.of(() => Promise.resolve(100))
+            Try.success(Promise.resolve(100))
                 .filter(value => value > 500)
                 .onFailure(err => done());
         });
@@ -90,6 +90,16 @@ mocha.describe('Success', () => {
         mocha.it('should throw error when filter argument is not a function', () => {
             let success = Try.success(100);
             assert.throws(() => success.flatMap({}));
+        });
+
+        mocha.it('should yield TryError when flapMap yields failure', done => {
+            Try.of(() => Promise.resolve(100))
+                .flatMap(value => Try.failure('Ouch'))
+                .onFailure(err => {
+                    assert(err instanceof TryError.default);
+                    assert(err.err.includes('Ouch'));
+                    done();
+                });
         });
     });
 

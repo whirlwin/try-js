@@ -33,7 +33,7 @@ class TryPromise {
                 if (result instanceof Success) {
                     return result.result;
                 } else if (result instanceof Failure) {
-                    return new TryError(`flatMap yielded failure for value ${value}`);
+                    return new TryError(`flatMap yielded failure with err "${result.err}"`);
                 } else {
                     return result.promise;
                 }

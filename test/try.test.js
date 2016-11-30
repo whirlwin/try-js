@@ -210,6 +210,25 @@ mocha.describe('Try', () => {
                 .onSuccess(value => hasBeenInvoked = true);
             assert(!hasBeenInvoked);
         });
+
+        mocha.it('should not trigger on a failure promise', () => {
+            let hasBeenInvoked = false;
+            Try.of(() => Promise.reject(100))
+                .onSuccess(err => hasBeenInvoked = true);
+            assert(!hasBeenInvoked);
+        });
+
+        mocha.it('should be invoked in correct order', (done) => {
+            let word = '';
+            Try.of(() => Promise.resolve(100))
+                .onSuccess(err => word += 'foo')
+                .onSuccess(err => word += 'bar')
+                .onSuccess(err => word += 'baz')
+                .onSuccess(() => {
+                    assert.equal(word, 'foobarbaz');
+                    done();
+                });
+        });
     });
 
     mocha.describe('.orElse()', () => {
@@ -249,6 +268,6 @@ mocha.describe('Try', () => {
 
         mocha.it('should not accept promise argument', () => {
             assert.throws(() => Try.success(Promise.reject('No').catch(() => {})), Error);
-        })
+        });
     });
 });

@@ -1,5 +1,7 @@
-import Success from './lib/success';
 import Failure from './lib/failure';
+import Success from './lib/success';
+import PromiseFailure from './lib/promise-failure';
+import PromiseSuccess from './lib/promise-success';
 import TryPromise from './lib/try-promise';
 import ValidationUtil from './lib/validation-util';
 

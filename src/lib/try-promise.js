@@ -10,8 +10,8 @@ class TryPromise {
     }
 
     filter(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function filter');
         return new TryPromise(this.promise.then(value => {
-            ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function filter');
             if (!(value instanceof TryError)) {
                 let predicateMatch = fn(value);
                 if (predicateMatch) {
@@ -95,9 +95,9 @@ class TryPromise {
             if (value instanceof TryError) {
                 let result = fn(value);
                 if (result instanceof Success) {
-                    return result.result;
+                    return result.value;
                 } else if (result instanceof Failure) {
-                    return new TryError(`orElse yielded failure for value ${value}`);
+                    return new TryError(`orElse yielded failure for value ${result.err}`);
                 } else {
                     return result.promise;
                 }

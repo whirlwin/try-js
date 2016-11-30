@@ -252,16 +252,22 @@ mocha.describe('Try', () => {
                 });
         });
 
-        mocha.it('should invoke other tries on failure promises', (done) => {
-            done();
-            /*
+        mocha.it('should invoke another try on first failure promise', (done) => {
             Try.of(() => Promise.reject('nope 1'))
                 .orElse(() => Try.failure('nope 2'))
-                .onFailure(err => {
-                    console.log(err);
+                .onFailure(() => {
                     done();
-                }).onSuccess(value => done());
-                */
+                });
+        });
+
+        mocha.it('should invoke third try on first failure promise', (done) => {
+            Try.of(() => Promise.reject('nope 1'))
+                .orElse(() => Try.failure('nope 2'))
+                .orElse(() => Try.failure('nope 3'))
+                .onFailure((err) => {
+                    assert(err.err.indexOf('nope 3') !== -1)
+                    done();
+                });
         });
 
         mocha.it('should not invoke another try on success', () => {

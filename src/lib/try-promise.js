@@ -73,7 +73,12 @@ class TryPromise {
                 fn(value);
             }
             return value;
-        }).catch(err => new TryError(err)));
+        }).catch(err => {
+            if (typeof err != 'undefined') {
+                fn(err);
+            }
+            return new TryError(err)
+        }));
     }
 
     onSuccess(fn) {

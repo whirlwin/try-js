@@ -1,5 +1,4 @@
 const assert = require('assert');
-const Failure = require('../dist/lib/try-failure');
 const mocha = require('mocha');
 const Try = require('../dist');
 const TryError = require('../dist/lib/try-error');
@@ -176,11 +175,23 @@ mocha.describe('Try', () => {
             assert(!hasBeenIvoked);
         });
 
-        mocha.it('should be invoked in correct order', () => {
+        mocha.it('should not trigger on a success promise', () => {
+            let hasBeenInvoked = false;
+            Try.of(() => Promise.resolve(100))
+                .onFailure(err => hasBeenInvoked = true);
+            assert(!hasBeenInvoked);
+        });
+
+        mocha.it('should be invoked in correct order', (done) => {
+            let word = '';
             Try.of(() => Promise.reject('no'))
-                .onFailure(err => console.log('1'))
-                .onFailure(err => console.log('2'))
-                .onFailure(err => console.log('3'))
+                .onFailure(err => word += 'foo')
+                .onFailure(err => word += 'bar')
+                .onFailure(err => word += 'baz')
+                .onFailure(() => {
+                    assert.equal(word, 'foobarbaz');
+                    done();
+                });
         });
     });
 

@@ -1,9 +1,10 @@
 const assert = require('assert');
+const Failure = require('../dist/lib/try-failure');
 const mocha = require('mocha');
 const Try = require('../dist');
 const TryError = require('../dist/lib/try-error');
 
-mocha.describe('Success', () => {
+mocha.describe('Try', () => {
 
     mocha.describe('.filter()', () => {
 
@@ -53,7 +54,7 @@ mocha.describe('Success', () => {
         });
 
         mocha.it('should return failure promise when filter predicate does not match', (done) => {
-            Try.success(Promise.resolve(100))
+            Try.of(() => Promise.resolve(100))
                 .filter(value => value > 500)
                 .onFailure(err => done());
         });
@@ -174,9 +175,16 @@ mocha.describe('Success', () => {
                 .onFailure(err => hasBeenIvoked = true);
             assert(!hasBeenIvoked);
         });
+
+        mocha.it('should be invoked in correct order', () => {
+            Try.of(() => Promise.reject('no'))
+                .onFailure(err => console.log('1'))
+                .onFailure(err => console.log('2'))
+                .onFailure(err => console.log('3'))
+        });
     });
 
-    mocha.describe('.onSuccess', () => {
+    mocha.describe('.onSuccess()', () => {
 
         mocha.it('should trigger on a success', () => {
             let hasBeenInvoked = false;
@@ -193,7 +201,7 @@ mocha.describe('Success', () => {
         });
     });
 
-    mocha.describe('.orElse', () => {
+    mocha.describe('.orElse()', () => {
 
         mocha.it('should invoke another try on failure', () => {
             let success = Try.failure('Errrrr')
@@ -207,5 +215,29 @@ mocha.describe('Success', () => {
                 .get();
             assert.equal(value, 100);
         });
+    });
+
+    mocha.describe('.failure()', () => {
+
+        mocha.it('should yield try failure', () => {
+            let failure = Try.failure('No');
+            assert(failure.isFailure());
+        });
+
+        mocha.it('should not accept promise argument', () => {
+            assert.throws(() => Try.failure(Promise.reject('No').catch(() => {})), Error);
+        });
+    });
+
+    mocha.describe('.success()', () => {
+
+        mocha.it('should yield try success', () => {
+            let success = Try.success(100);
+            assert(success.isSuccess());
+        });
+
+        mocha.it('should not accept promise argument', () => {
+            assert.throws(() => Try.success(Promise.reject('No').catch(() => {})), Error);
+        })
     });
 });

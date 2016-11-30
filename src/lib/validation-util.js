@@ -6,8 +6,19 @@ class ValidationUtil {
         }
     }
 
+    static requireFunction(value, errMsg) {
+        if (typeof value !== 'function') {
+            throw new Error(errMsg);
+        }
+    }
+
     static requireNonNullFunction(value, errMsg) {
-        if (value === null || typeof value !== 'function') {
+        ValidationUtil.requireFunction(value, errMsg);
+        ValidationUtil.requireNonNull(value, errMsg);
+    }
+
+    static requireNonPromise(value, errMsg) {
+        if (value instanceof Promise) {
             throw new Error(errMsg);
         }
     }

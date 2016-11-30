@@ -1,6 +1,7 @@
 import Success from './lib/success';
 import Failure from './lib/failure';
 import TryPromise from './lib/try-promise';
+import ValidationUtil from './lib/validation-util';
 
 function of(fn) {
     if (!fn) {
@@ -20,10 +21,12 @@ function of(fn) {
 }
 
 function success(result) {
+    ValidationUtil.requireNonPromise(result, 'Value provided for Try.success is a promise. Use Try.of instead');
     return new Success(result);
 }
 
 function failure(err) {
+    ValidationUtil.requireNonPromise(err, 'Value provided for Try.success is a promise. Use Try.of instead');
     return new Failure(err);
 }
 

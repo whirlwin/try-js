@@ -5,6 +5,18 @@ const TryError = require('../dist/lib/try-error');
 
 mocha.describe('Try', () => {
 
+    mocha.describe('.failure()', () => {
+
+        mocha.it('should yield try failure', () => {
+            let failure = Try.failure('No');
+            assert(failure.isFailure());
+        });
+
+        mocha.it('should not accept promise argument', () => {
+            assert.throws(() => Try.failure(Promise.reject('No').catch(() => {})), Error);
+        });
+    });
+
     mocha.describe('.filter()', () => {
 
         mocha.it('should return success when filter predicate matches', () => {
@@ -161,25 +173,21 @@ mocha.describe('Try', () => {
 
     mocha.describe('.onFailure()', () => {
 
-        mocha.it('should trigger on a failure', () => {
-            let hasBeenInvoked = false;
+        mocha.it('should trigger on a failure', (done) => {
             Try.failure('No')
-                .onFailure(err => hasBeenInvoked = true);
-            assert(hasBeenInvoked);
+                .onFailure(err => done());
         });
 
-        mocha.it('should not trigger on a success', () => {
-            let hasBeenIvoked = false;
+        mocha.it('should not trigger on a success', (done) => {
             Try.success(100)
-                .onFailure(err => hasBeenIvoked = true);
-            assert(!hasBeenIvoked);
+                .onFailure(err => done('Should not be invoked'));
+            done();
         });
 
-        mocha.it('should not trigger on a success promise', () => {
-            let hasBeenInvoked = false;
+        mocha.it('should not trigger on a success promise', (done) => {
             Try.of(() => Promise.resolve(100))
-                .onFailure(err => hasBeenInvoked = true);
-            assert(!hasBeenInvoked);
+                .onFailure(err => done('Should not be invoked'));
+            done();
         });
 
         mocha.it('should be invoked in correct order', (done) => {
@@ -197,25 +205,21 @@ mocha.describe('Try', () => {
 
     mocha.describe('.onSuccess()', () => {
 
-        mocha.it('should trigger on a success', () => {
-            let hasBeenInvoked = false;
+        mocha.it('should trigger on a success', (done) => {
             Try.success(100)
-                .onSuccess(value => hasBeenInvoked = true);
-            assert(hasBeenInvoked);
+                .onSuccess(value => done());
         });
 
-        mocha.it('should not trigger on a failure', () => {
-            let hasBeenInvoked = false;
+        mocha.it('should not trigger on a failure', (done) => {
             Try.failure('Args!')
-                .onSuccess(value => hasBeenInvoked = true);
-            assert(!hasBeenInvoked);
+                .onSuccess(value => done('Should not be invoked'));
+            done();
         });
 
-        mocha.it('should not trigger on a failure promise', () => {
-            let hasBeenInvoked = false;
+        mocha.it('should not trigger on a failure promise', (done) => {
             Try.of(() => Promise.reject(100))
-                .onSuccess(err => hasBeenInvoked = true);
-            assert(!hasBeenInvoked);
+                .onSuccess(err => done('Should not be invoked'));
+            done();
         });
 
         mocha.it('should be invoked in correct order', (done) => {
@@ -234,9 +238,30 @@ mocha.describe('Try', () => {
     mocha.describe('.orElse()', () => {
 
         mocha.it('should invoke another try on failure', () => {
-            let success = Try.failure('Errrrr')
-                .orElse(() => Try.success(1234));
-            assert.equal(success.get(), 1234);
+            let success = Try.failure('nope')
+                .orElse(() => Try.success('yep'));
+            assert.equal(success.get(), 'yep');
+        });
+
+        mocha.it('should invoke another try on failure promise', (done) => {
+            Try.of(() => Promise.reject('nope'))
+                .orElse(() => Try.success('yep'))
+                .onSuccess(value => {
+                    assert.equal(value, 'yep');
+                    done();
+                });
+        });
+
+        mocha.it('should invoke other tries on failure promises', (done) => {
+            done();
+            /*
+            Try.of(() => Promise.reject('nope 1'))
+                .orElse(() => Try.failure('nope 2'))
+                .onFailure(err => {
+                    console.log(err);
+                    done();
+                }).onSuccess(value => done());
+                */
         });
 
         mocha.it('should not invoke another try on success', () => {
@@ -245,17 +270,11 @@ mocha.describe('Try', () => {
                 .get();
             assert.equal(value, 100);
         });
-    });
 
-    mocha.describe('.failure()', () => {
-
-        mocha.it('should yield try failure', () => {
-            let failure = Try.failure('No');
-            assert(failure.isFailure());
-        });
-
-        mocha.it('should not accept promise argument', () => {
-            assert.throws(() => Try.failure(Promise.reject('No').catch(() => {})), Error);
+        mocha.it('should not invoke another try on failure promise', (done) => {
+            Try.of(() => Promise.resolve('yep'))
+                .orElse(() => done('Should not be invoked'));
+            done();
         });
     });
 

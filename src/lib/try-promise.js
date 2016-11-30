@@ -6,7 +6,7 @@ import ValidationUtil from './validation-util';
 class TryPromise {
 
     constructor(promise) {
-        this.promise = promise;
+        this.promise = promise.catch(err => new TryError(err));
     }
 
     filter(fn) {
@@ -92,7 +92,7 @@ class TryPromise {
 
     orElse(fn) {
         return new TryPromise(this.promise.then(value => {
-            if (!(value instanceof TryError)) {
+            if (value instanceof TryError) {
                 let result = fn(value);
                 if (result instanceof Success) {
                     return result.result;
@@ -104,7 +104,13 @@ class TryPromise {
             } else {
                 return value;
             }
-        }).catch(err => new TryError(err)));
+        }).catch(err => {
+            if (typeof err != 'undefined') {
+                return fn(err).value;
+            } else {
+                return new TryError(err)
+            }
+        }));
     }
 }
 

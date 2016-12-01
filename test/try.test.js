@@ -255,7 +255,8 @@ mocha.describe('Try', () => {
         mocha.it('should invoke another try on first failure promise', (done) => {
             Try.of(() => Promise.reject('nope 1'))
                 .orElse(() => Try.failure('nope 2'))
-                .onFailure(() => {
+                .onFailure(err => {
+                    assert(err.err.includes('nope 2'));
                     done();
                 });
         });
@@ -265,7 +266,7 @@ mocha.describe('Try', () => {
                 .orElse(() => Try.failure('nope 2'))
                 .orElse(() => Try.failure('nope 3'))
                 .onFailure((err) => {
-                    assert(err.err.indexOf('nope 3') !== -1)
+                    assert(err.err.includes('nope 3'));
                     done();
                 });
         });

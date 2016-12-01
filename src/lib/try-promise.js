@@ -26,7 +26,7 @@ class TryPromise {
     }
 
     flatMap(fn) {
-       return new TryPromise(this.promise.then(value => {
+        return new TryPromise(this.promise.then(value => {
             ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
             if (!(value instanceof TryError)) {
                 let result = fn(value);

@@ -6,7 +6,7 @@ mocha.describe('Try', () => {
 
     mocha.describe('chained promises', () => {
 
-        mocha.it('should chain flatMap in correct order', (done) => {
+        mocha.it('should chain Try flatMap in correct order', (done) => {
             Try.of(() => new Promise((resolve, reject) => { resolve('hello'); }))
                 .map(value => value + ' world')
                 .flatMap(value => Try.of(() => value + ' 2.0' ))
@@ -16,5 +16,17 @@ mocha.describe('Try', () => {
                     done();
                 });
         });
+
+        mocha.it('should chain promised Try flatMap in correct order', (done) => {
+            Try.of(() => new Promise((resolve, reject) => { resolve('hello'); }))
+                .map(value => value + ' world')
+                .flatMap(value => Try.of(() => new Promise((resolve, reject) => { resolve(value + ' 2.0'); }) ))
+                .flatMap(value => Try.of(() => new Promise((resolve, reject) => { resolve(value + ' !!!'); }) ))
+                .onSuccess(value => {
+                    assert.equal(value, 'hello world 2.0 !!!');
+                    done();
+                });
+        });
+
     });
 });

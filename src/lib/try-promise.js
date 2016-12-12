@@ -1,5 +1,6 @@
 import Success from './success';
 import Failure from './failure';
+import Try from './try';
 import TryError from './try-error';
 import ValidationUtil from './validation-util';
 
@@ -30,7 +31,9 @@ class TryPromise {
             ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
             if (!(value instanceof TryError)) {
                 let result = fn(value);
-                if (result instanceof Success) {
+                if (!ValidationUtil.isTry(result)) {
+                    return new TryError(`Argument to flatMap was not a Try`);
+                } else if (result instanceof Success) {
                     return result.result;
                 } else if (result instanceof Failure) {
                     return new TryError(`flatMap yielded failure with err "${result.err}"`);

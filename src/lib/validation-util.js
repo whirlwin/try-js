@@ -1,3 +1,6 @@
+import Try from './try';
+import TryPromise from './try-promise';
+
 class ValidationUtil {
 
     static requireNonNull(value, errMsg) {
@@ -21,6 +24,16 @@ class ValidationUtil {
         if (value instanceof Promise) {
             throw new Error(errMsg);
         }
+    }
+
+    static requireTry(value, errMsg) {
+        if (!ValidationUtil.isTry(value)) {
+            throw new Error(errMsg);
+        }
+    }
+
+    static isTry(value) {
+        return (value instanceof Try || value instanceof TryPromise);
     }
 
     static isFunction(fn) {

@@ -1,4 +1,3 @@
-import DeprecationUtil from './deprecation-util';
 import Failure from './failure';
 import Try from './try';
 import ValidationUtil from './validation-util';
@@ -21,7 +20,9 @@ class Success extends Try {
 
     flatMap(fn) {
         ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
-        return fn.call(this, this.value);
+        const result = fn.call(this, this.value);
+        ValidationUtil.requireTry(result, 'Argument to flatMap was not a Try');
+        return result;
     }
 
     get() {
@@ -57,15 +58,6 @@ class Success extends Try {
     }
 
     orElse() {
-        return new Success(this.value);
-    }
-
-    peek(fn) {
-        DeprecationUtil.notifyDeprecation('peek() is deprecated - use onSuccess instead');
-        this.onSuccess(fn);
-    }
-
-    peekFailure() {
         return new Success(this.value);
     }
 

@@ -102,19 +102,30 @@ mocha.describe('Try', () => {
             assert.throws(() => success.flatMap());
         });
 
-        mocha.it('should throw error when filter argument is not a function', () => {
+        mocha.it('should throw error when flatMap argument is not a function', () => {
             let success = Try.success(100);
             assert.throws(() => success.flatMap({}));
         });
 
-        mocha.it('should yield TryError when flapMap yields failure', done => {
-            Try.of(() => Promise.resolve(100))
-                .flatMap(value => Try.failure('Ouch'))
+        mocha.it('should yield Failure when flapMap yields failure', done => {
+            Try.of(() => Promise.resolve('yep'))
+                .flatMap(value => Try.failure('ouch'))
                 .onFailure(err => {
                     assert(err instanceof TryError.default);
-                    assert(err.err.includes('Ouch'));
+                    assert(err.err.includes('ouch'));
                     done();
                 });
+        });
+
+        mocha.it('should throw error for Try when flatMap argument does not yield a Try', () => {
+            let success = Try.of(() => 'yep');
+            assert.throws(() => success.flatMap(value => 'not a Try'));
+        });
+
+        mocha.it('should yield failure for promised Try when flatMap argument does not yield a Try', (done) => {
+            Try.of(() => Promise.resolve('yep'))
+                .flatMap(value => 'not a Try')
+                .onFailure(err =>  done());
         });
     });
 

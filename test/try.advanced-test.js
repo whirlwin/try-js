@@ -6,19 +6,14 @@ mocha.describe('Try', () => {
 
     mocha.describe('chained promises', () => {
 
-        mocha.it('should do something', (done) => {
+        mocha.it('should chain flatMap in correct order', (done) => {
             Try.of(() => new Promise((resolve, reject) => { resolve('hello'); }))
                 .map(value => value + ' world')
                 .flatMap(value => Try.of(() => value + ' 2.0' ))
-                .flatMap(value => Try.of(() => value + ' end' ))
+                .flatMap(value => Try.of(() => value + ' !!!' ))
                 .onSuccess(value => {
-                    console.log('onSuccess: ' + value);
-                    //console.log(value);
-                    //assert.equal(value, 'hello world 2.0');
+                    assert.equal(value, 'hello world 2.0 !!!');
                     done();
-                })
-                .onFailure(err => {
-                    done('failed with ' + JSON.stringify(err));
                 });
         });
     });

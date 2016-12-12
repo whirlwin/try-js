@@ -38,6 +38,7 @@ class TryPromise {
             if (!ValidationUtil.isTry(result) && !ValidationUtil.isTryPromise(result)) {
                 return new TryError(`Argument to flatMap was not a Try`);
             } else if (result instanceof Success) {
+                console.log(result.value)
                 return result.value;
             } else if (result instanceof Failure) {
                 return new TryError(`flatMap yielded failure with err "${result.err}"`);

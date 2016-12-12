@@ -1,7 +1,5 @@
 import Failure from './lib/failure';
 import Success from './lib/success';
-import PromiseFailure from './lib/promise-failure';
-import PromiseSuccess from './lib/promise-success';
 import TryPromise from './lib/try-promise';
 import ValidationUtil from './lib/validation-util';
 
@@ -14,7 +12,7 @@ function of(fn) {
             if (result instanceof Promise) {
                 return new TryPromise(result);
             } else {
-                return new Success(fn());
+                return new Success(result);
             }
         } catch (err) {
             return new Failure(err);

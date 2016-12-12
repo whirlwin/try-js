@@ -15,9 +15,9 @@ class ValidationUtil {
         }
     }
 
-    static requireNonNullFunction(value, errMsg) {
-        ValidationUtil.requireFunction(value, errMsg);
-        ValidationUtil.requireNonNull(value, errMsg);
+    static requireNonNullFunction(fn, errMsg) {
+        ValidationUtil.requireFunction(fn, errMsg);
+        ValidationUtil.requireNonNull(fn, errMsg);
     }
 
     static requireNonPromise(value, errMsg) {
@@ -33,7 +33,11 @@ class ValidationUtil {
     }
 
     static isTry(value) {
-        return (value instanceof Try || value instanceof TryPromise);
+        return value instanceof Try;
+    }
+
+    static isTryPromise(value) {
+        return value instanceof TryPromise;
     }
 
     static isFunction(fn) {

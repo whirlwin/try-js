@@ -8,16 +8,17 @@ mocha.describe('Try', () => {
 
         mocha.it('should do something', (done) => {
             Try.of(() => new Promise((resolve, reject) => { resolve('hello'); }))
-                .map(value => {
-                    console.log('map...');
-                    return value + ' world';
-                })
-                .flatMap(value => Try.of(() => { console.log('flatMap...' + value); return value + ' 2.0'; }))
-                .flatMap(value => Try.of(() => { console.log('flatMap...' + value); return value + ' 2.0'; }))
+                .map(value => value + ' world')
+                .flatMap(value => Try.of(() => value + ' 2.0' ))
+                .flatMap(value => Try.of(() => value + ' end' ))
                 .onSuccess(value => {
+                    console.log('onSuccess: ' + value);
                     //console.log(value);
                     //assert.equal(value, 'hello world 2.0');
                     done();
+                })
+                .onFailure(err => {
+                    done('failed with ' + JSON.stringify(err));
                 });
         });
     });

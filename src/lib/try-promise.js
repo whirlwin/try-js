@@ -72,6 +72,7 @@ class TryPromise {
     }
 
     onFailure(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onFailure');
         return new TryPromise(this.promise.then(value => {
             if (value instanceof TryError) {
                 fn(value);
@@ -86,6 +87,7 @@ class TryPromise {
     }
 
     onSuccess(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
         return new TryPromise(this.promise.then(value => {
             if (!(value instanceof TryError)) {
                 fn(value);

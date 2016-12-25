@@ -212,6 +212,12 @@ mocha.describe('Try', () => {
                     done();
                 });
         });
+
+        mocha.it('should throw error when argument is not a function', () => {
+            assert.throws(() => Try.failure('nope').onFailure({}), Error);
+
+            assert.throws(() => Try.of(() => Promise.reject('nope')).onFailure({}), Error);
+        });
     });
 
     mocha.describe('.onSuccess()', () => {
@@ -243,6 +249,12 @@ mocha.describe('Try', () => {
                     assert.equal(word, 'foobarbaz');
                     done();
                 });
+        });
+
+        mocha.it('should throw error when argument is not a function', () => {
+            assert.throws(() => Try.success('yep').onSuccess({}), Error);
+
+            assert.throws(() => Try.of(() => Promise.resolve('yep')).onSuccess({}), Error);
         });
     });
 

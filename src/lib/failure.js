@@ -6,7 +6,6 @@ class Failure extends Try {
 
     constructor(err) {
         super(err, null);
-        this.err = err;
     }
 
     filter() {
@@ -27,6 +26,7 @@ class Failure extends Try {
 
     getOrElseThrow(fn) {
         ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
+        fn.apply(null, this.err);
     }
 
     isFailure() {

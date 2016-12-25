@@ -150,6 +150,20 @@ mocha.describe('Try', () => {
         });
     });
 
+    mocha.describe('.getOrElseThrow()', () => {
+
+        mocha.it('should throw failure when failure', () => {
+            let failure = Try.failure('nope');
+            assert.throws(() => failure.getOrElseThrow(err => new Error(err)), Error);
+        });
+
+        mocha.it('should get value when success', () => {
+            let value = Try.success('yep')
+                .getOrElseThrow(err => new Error(err));
+            assert.equal(value, 'yep');
+        });
+    });
+
     mocha.describe('.isSuccess()', () => {
 
         mocha.it('should indicate that a success is a success', () => {

@@ -33,6 +33,11 @@ class Success extends Try {
         return this.value;
     }
 
+    getOrElseThrow(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
+        return this.value;
+    }
+
     isFailure() {
         return false;
     }

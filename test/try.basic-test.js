@@ -127,6 +127,12 @@ mocha.describe('Try', () => {
                 .flatMap(value => 'not a Try')
                 .onFailure(err =>  done());
         });
+
+        mocha.it('should flatMap from try to promised try', (done) => {
+            Try.of(() => 'yep')
+                .flatMap(value => Try.of(() => Promise.resolve('yes')))
+                .onSuccess(value => done());
+        });
     });
 
     mocha.describe('.getOrElse()', () => {
@@ -188,10 +194,9 @@ mocha.describe('Try', () => {
         });
 
         mocha.it('should not map a failure value', () => {
-            let failure = Try.failure('Nope')
+            Try.failure('Nope')
                 .map(value => {
                     assert.fail(null, null, 'should not be called: value ' + value, null);
-                    throw new Error('Not happening');
                 });
         });
     });

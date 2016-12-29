@@ -127,6 +127,12 @@ mocha.describe('Try', () => {
                 .flatMap(value => 'not a Try')
                 .onFailure(err =>  done());
         });
+
+        mocha.it('should flatMap from try to promised try', (done) => {
+            Try.of(() => 'yep')
+                .flatMap(value => Try.of(() => Promise.resolve('yes')))
+                .onSuccess(value => done());
+        });
     });
 
     mocha.describe('.getOrElse()', () => {
@@ -147,6 +153,20 @@ mocha.describe('Try', () => {
         mocha.it('should indicate that a success is not a failure', () => {
             let success = Try.success(100);
             assert(!success.isFailure());
+        });
+    });
+
+    mocha.describe('.getOrElseThrow()', () => {
+
+        mocha.it('should throw failure when failure', () => {
+            let failure = Try.failure('nope');
+            assert.throws(() => failure.getOrElseThrow(err => new Error(err)), Error);
+        });
+
+        mocha.it('should get value when success', () => {
+            let value = Try.success('yep')
+                .getOrElseThrow(err => new Error(err));
+            assert.equal(value, 'yep');
         });
     });
 
@@ -174,10 +194,9 @@ mocha.describe('Try', () => {
         });
 
         mocha.it('should not map a failure value', () => {
-            let failure = Try.failure('Nope')
+            Try.failure('Nope')
                 .map(value => {
                     assert.fail(null, null, 'should not be called: value ' + value, null);
-                    throw new Error('Not happening');
                 });
         });
     });
@@ -212,6 +231,12 @@ mocha.describe('Try', () => {
                     done();
                 });
         });
+
+        mocha.it('should throw error when argument is not a function', () => {
+            assert.throws(() => Try.failure('nope').onFailure({}), Error);
+
+            assert.throws(() => Try.of(() => Promise.reject('nope')).onFailure({}), Error);
+        });
     });
 
     mocha.describe('.onSuccess()', () => {
@@ -243,6 +268,12 @@ mocha.describe('Try', () => {
                     assert.equal(word, 'foobarbaz');
                     done();
                 });
+        });
+
+        mocha.it('should throw error when argument is not a function', () => {
+            assert.throws(() => Try.success('yep').onSuccess({}), Error);
+
+            assert.throws(() => Try.of(() => Promise.resolve('yep')).onSuccess({}), Error);
         });
     });
 

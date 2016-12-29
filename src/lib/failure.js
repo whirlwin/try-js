@@ -6,7 +6,6 @@ class Failure extends Try {
 
     constructor(err) {
         super(err, null);
-        this.err = err;
     }
 
     filter() {
@@ -25,6 +24,11 @@ class Failure extends Try {
         return value;
     }
 
+    getOrElseThrow(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
+        fn.apply(null, this.err);
+    }
+
     isFailure() {
         return true;
     }
@@ -38,28 +42,19 @@ class Failure extends Try {
     }
 
     onFailure(fn) {
-        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onFailure');
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onFailure');
         fn(this.err);
         return new Failure(this.err);
     }
 
     onSuccess(fn) {
-        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function onSuccess');
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
         return new Failure(this.err);
     }
 
     orElse(fn) {
-        ValidationUtil.requireNonNull(fn, '(arg1 - function) not provided for function orElse');
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function orElse');
         return fn();
-    }
-
-    peek() {
-        return new Failure(this.err);
-    }
-
-    peekFailure(fn) {
-        DeprecationUtil.notifyDeprecation('peekFailure() is deprecated - use onFailure instead');
-        return this.onFailure(fn);
     }
 
     resolve(successFn, failureFn) {

@@ -21,7 +21,7 @@ class Success extends Try {
     flatMap(fn) {
         ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function flatMap');
         const result = fn.call(this, this.value);
-        ValidationUtil.requireTry(result, 'Argument to flatMap was not a Try');
+        ValidationUtil.requireTryOrTryPromise(result, 'Argument to flatMap was not a Try');
         return result;
     }
 
@@ -30,6 +30,11 @@ class Success extends Try {
     }
 
     getOrElse() {
+        return this.value;
+    }
+
+    getOrElseThrow(fn) {
+        ValidationUtil.requireNonNullFunction(fn, '(arg1 - function) not provided for function onSuccess');
         return this.value;
     }
 

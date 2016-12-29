@@ -26,8 +26,8 @@ class ValidationUtil {
         }
     }
 
-    static requireTry(value, errMsg) {
-        if (!ValidationUtil.isTry(value)) {
+    static requireTryOrTryPromise(value, errMsg) {
+        if (!ValidationUtil.isTry(value) && !ValidationUtil.isTryPromise(value)) {
             throw new Error(errMsg);
         }
     }

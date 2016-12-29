@@ -28,5 +28,17 @@ mocha.describe('Try', () => {
                 });
         });
 
+        mocha.it('should chain all functions correctly', done => {
+            Try.of(() => 100)
+                .onSuccess(value => assert.equal(value, 100))
+                .onFailure(err => assert(false))
+                .map(value => value + 100)
+                .onSuccess(value => assert.equal(value, 200))
+                .onFailure(err => assert(false))
+                .flatMap(value => Try.of(() => 300))
+                .onSuccess(value => assert.equal(value, 300))
+                .onFailure(err => assert(false))
+                .onSuccess(value => done());
+        });
     });
 });
